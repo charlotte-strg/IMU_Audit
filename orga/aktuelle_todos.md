@@ -1,30 +1,30 @@
 ### FRAGEN FÜR KONSULTATION
 ----------------------------------------------------------------- 
 4. welche achsen brauchen wir für die berechnung der distanz/rotation? z-achse relevant, weil nur aufsicht in arena messbar..
-5. ich brauche nochmal das programm mit dem der ladestand der angeschlossenen batterie auf dem display angezeigt wird
 6. brauche bot, der nicht erst reagiert, wenn ich den finger auf dem prozessor habe.
 
 
 ### AKTUELL
 -----------------------------------------------------------------
 ## Aufgaben für nächste Zeit: Herausfinden, wie gut IMU ist. Dafür:
+
 - signal to noise ratio berechnen für mein csv signal
+- charakterisierung für signal (z.b. energie, irgendein maß, nicht amplitude) --> vergleich, wurzel der summe der quadrate von allen samples (mit/ohne lp vergleich), nur für gyro: drift in radian/sekunde (ungeklärt: beeinflusst die drehung der erde den drift über eine zeit von 15 sekunden?), welche entfernung bin ich gefahren und wie weit 
+ist der durch integration ermittelte weg --> vergleich
+
 - **orientierung im raum algo von metric mal googlen**
 - orientierung im raum algo von metric implementieren
+
 - low pass hardware aktivieren und testen
 - vergleich lp hardware und lp programmiert (signal to noise ratio in db)
-- charakterisierung für signal (z.b. energie, irgendein maß, nicht amplitude) --> vergleich, wurzel der summe der quadrate von allen samples (mit/ohne lp vergleich), nur für gyro: drift in radian/sekunde (ungeklärt: beeinflusst die drehung der erde den drift über eine zeit von 15 sekunden?), welche entfernung bin ich gefahren und wie weit ist der durch integration ermittelte weg --> vergleich
-- aufnahmen machen: stehen/losfahren/stehen, weg auszeichnen/ermitteln durch doppelte integration, nur stehen (drift), drehen 360/180/90/was krummes
-- analyse: frequency response von meinem filter (faktoren mit denen einzelne frequenzen verstärkt/abgeschwächt wurden durch einsatz filter --> plotten)
 - mal versuchen: referenzsystem ändern - schwerkraft rausrechnen z.b. mit bandpass 
+- analyse: frequency response von meinem filter (faktoren mit denen einzelne frequenzen verstärkt/abgeschwächt wurden durch einsatz filter --> plotten)
+- **plot-funktion schreiben, mit der sich alles mögliche direkt plotten lässt velocity,  accel, gyro, signal, fft, etc . func params: x (time), y (signal werte)**
+
+- **saubere aufnahmen machen (arena): stehen/losfahren/stehen, nur stehen (drift), drehen (360/180/90)**
+
 - optimal: IMU benötigt nur zeit bis zum nächsten buffer, um rechenoperationen zu machen (z.b. rauschen rausrechnen) --> muss auf dem bot laufen
-- funktion schreiben, mit der sich direkt signal und fft dazu plotten lässt. func parameters: x (time), y (signal werte)
 
-- ordentlich git aufsetzen für IMU-Audit: warum kann ich nicht committen? wegen murmecha repo?
-- grundsätzlich nochmal über sinnvolle projektstruktur nachdenken: IMU Analysis und IMU Audit zusammenlegen? brauche ich die murmecha-module?
-- serial to csv löschen oder deprecaten? wohin?
-
-- ist die beschleunigung lokal oder global?
 - erdbeschleunigung/erdrotation korrekt aus IMU daten rausrechnen? bisher quick and dirty 9,81 abgezogen
 
 ## Theorierecherche:
@@ -94,3 +94,8 @@ IMU auslesen
 - bot über wifi nutzen lernen
 - welche kennzahlen geben auskunft darüber, ob mein lowpass gut funktioniert?
 - problem: falsche einheit für distanz irgendwo in der berechnung/integration... sollten sowas wie 0,1m sein, sind aber 100m, also verschoben um faktor 1000, erdrotation rausgerechnet, code sieht okay aus, distanz aber immer noch verschoben von ~0,1m zu 4m
+- ordentlich git aufsetzen für IMU-Audit: warum kann ich nicht committen? wegen murmecha repo?
+- grundsätzlich nochmal über sinnvolle projektstruktur nachdenken: IMU Analysis und IMU Audit zusammenlegen? brauche ich die murmecha-module?
+- serial to csv löschen oder deprecaten? wohin?
+- ist die beschleunigung lokal oder global? --> lokal
+- ich brauche nochmal das programm mit dem der ladestand der angeschlossenen batterie auf dem display angezeigt wird --> murmecha::display::show_info_screen;

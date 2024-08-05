@@ -2,7 +2,7 @@ import socket
 import struct
 import csv
 
-data_output_path = "data/imu_data.csv"
+data_output_path = "data/imu_data_drift.csv"
 listening_steps = 4096
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
