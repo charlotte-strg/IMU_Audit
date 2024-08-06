@@ -3,9 +3,22 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # pandas dataframe aus csv einlesen
-gyro_df = pd.read_csv("data/imu_data.csv")
+gyro_df = pd.read_csv("data/imu_data_drift.csv")
 # gyro_df = pd.read_csv("data/imu_data_with_distance.csv")
 
+# Berechnung des Bias (Offsets) für jede Achse
+# das hier ist im stream/live nicht möglich, weil es ein mittel über alle werte verwendet
+bias_x = np.mean(gyro_df['gyro_x'])
+bias_y = np.mean(gyro_df['gyro_y'])
+bias_z = np.mean(gyro_df['gyro_z'])
+
+# Korrigiere die Gyroskopdaten um den Bias
+# das hier ist im stream/live nicht möglich, weil es ein mittel über alle werte verwendet
+gyro_df['gyro_x'] = gyro_df['gyro_x'] - bias_x
+gyro_df['gyro_y'] = gyro_df['gyro_y'] - bias_y
+gyro_df['gyro_z'] = gyro_df['gyro_z'] - bias_z
+
+# für Gyro überflüssige Spalten entfernen
 gyro_df = gyro_df.drop(columns=['accel_x', 'accel_y', 'accel_z'])
 
 # Zeitdifferenzen in Sekunden berechnen
@@ -36,22 +49,12 @@ gyro_df['rotation_y'] = rotation_y
 gyro_df['rotation_z'] = rotation_z
 
 # Berechnung der Gesamtrotation (Magnitude der Rotationsvektoren)
+# macht das sinn? 
 gyro_df['total_rotation'] = np.sqrt(gyro_df['rotation_x']**2 + gyro_df['rotation_y']**2 + gyro_df['rotation_z']**2)
 
 # Zeige die berechneten Werte an
-print(gyro_df.head)
-print(gyro_df.tail)
-
-# Gesamtrotation plotten
-plt.figure()
-plt.plot(gyro_df['time_micros'], gyro_df['rotation_x'], label='Rotation X')
-plt.plot(gyro_df['time_micros'], gyro_df['rotation_y'], label='Rotation Y')
-plt.plot(gyro_df['time_micros'], gyro_df['rotation_z'], label='Rotation Z')
-plt.plot(gyro_df['time_micros'], gyro_df['total_rotation'], label='Total Rotation')
-plt.xlabel('Time [µs]')
-plt.ylabel('Rotation [°]')
-plt.legend()
-plt.show()
+# print(gyro_df.head)
+# print(gyro_df.tail)
 
 # Speichere die berechneten Werte in einer neuen CSV-Datei
 gyro_df.to_csv("data/imu_data_with_rotation.csv", index=False)

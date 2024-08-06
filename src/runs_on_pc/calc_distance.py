@@ -1,11 +1,10 @@
 import pandas as pd
-import matplotlib.pyplot as plt
-import numpy as np
 
 # pandas dataframe aus csv einlesen
 # accel_df = pd.read_csv("data/imu_data.csv")
-# accel_df = pd.read_csv("data/imu_data_drift.csv")
 accel_df = pd.read_csv("data/imu_data_drift.csv")
+
+# für Accel überflüssige Spalten entfernen
 accel_df = accel_df.drop(columns=['gyro_x', 'gyro_y', 'gyro_z'])
 
 # Ziehe Erdanziehungskraft von den Beschleunigungswerten accel_z ab
@@ -58,40 +57,6 @@ accel_df['distance_total'] = (accel_df['distance_x'] ** 2 + accel_df['distance_y
 # print(accel_df.head())
 # print(accel_df.tail())
 
-# plotten
-plt.figure()
-
-# Distanz
-plt.plot(accel_df['time_micros'] / 1e6, accel_df['distance_x'], label='Distance X')
-plt.plot(accel_df['time_micros'] / 1e6, accel_df['distance_y'], label='Distance Y')
-plt.plot(accel_df['time_micros'] / 1e6, accel_df['distance_z'], label='Distance Z')
-plt.plot(accel_df['time_micros'] / 1e6, accel_df['distance_total'], label='Distance')
-plt.ylabel('Distance [m]')
-
-# Geschwindigkeit
-# plt.plot(accel_df['time_micros'] / 1e6, accel_df['velocity_x'], label='Velocity X')
-# plt.plot(accel_df['time_micros'] / 1e6, accel_df['velocity_y'], label='Velocity Y')
-# plt.plot(accel_df['time_micros'] / 1e6, accel_df['velocity_z'], label='Velocity Z')
-# plt.ylabel('Velocity [m/s]')
-
-# Beschleunigung
-# plt.plot(accel_df['time_micros'] / 1e6, accel_df['accel_x'], label='Accel X')
-# plt.plot(accel_df['time_micros'] / 1e6, accel_df['accel_y'], label='Accel Y')
-# plt.plot(accel_df['time_micros'] / 1e6, accel_df['accel_z'], label='Accel Z')
-# plt.ylabel('Accel [m/s^2]')
-
-plt.xlabel('Time [s]')
-
-plt.legend()
-plt.show()
-
-# test
-print(accel_df['velocity_z'])
-print(np.diff(accel_df['velocity_z']))
-print(np.std(np.diff(accel_df['velocity_z'])))
-print(np.mean(np.diff(accel_df['velocity_z'])))
-
-
 # Speichere den DataFrame in einer neuen CSV-Datei
 # accel_df.to_csv("data/imu_data_with_distance.csv", index=False)
-accel_df.to_csv("data/imu_data_with_distance_backup.csv")
+accel_df.to_csv("data/backup_imu_data_with_distance.csv")
