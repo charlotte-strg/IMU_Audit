@@ -1,31 +1,39 @@
 ### FRAGEN FÜR KONSULTATION
 ----------------------------------------------------------------- 
-4. welche achsen brauchen wir für die berechnung der distanz/rotation? z-achse relevant, weil nur aufsicht in arena messbar..
-6. brauche bot, der nicht erst reagiert, wenn ich den finger auf dem prozessor habe.
-
+1. welche achsen brauchen wir für die berechnung der distanz/rotation? z-achse relevant, weil nur aufsicht in arena messbar..
+2. brauche bot, der nicht erst reagiert, wenn ich den finger auf dem prozessor habe.
+3. fragen, wie (gesamt-)rotation bestimmt werden soll
+4. distanz-problem nochmal anschauen
 
 ### AKTUELL
 -----------------------------------------------------------------
 ## Aufgaben für nächste Zeit: Herausfinden, wie gut IMU ist. Dafür:
 
 - signal to noise ratio berechnen für mein csv signal
-- charakterisierung für signal (z.b. energie, irgendein maß, nicht amplitude) --> vergleich, wurzel der summe der quadrate von allen samples (mit/ohne lp vergleich), nur für gyro: drift in radian/sekunde (ungeklärt: beeinflusst die drehung der erde den drift über eine zeit von 15 sekunden?), welche entfernung bin ich gefahren und wie weit 
-ist der durch integration ermittelte weg --> vergleich
+- charakterisierung für signal (z.b. energie, irgendein maß, nicht amplitude) --> vergleich, wurzel der summe der quadrate von allen samples (mit/ohne lp vergleich)
 
-- **orientierung im raum algo von metric mal googlen**
+- orientierung im raum algo von metric mal googlen
 - orientierung im raum algo von metric implementieren
 
 - low pass hardware aktivieren und testen
 - vergleich lp hardware und lp programmiert (signal to noise ratio in db)
 - mal versuchen: referenzsystem ändern - schwerkraft rausrechnen z.b. mit bandpass 
 - analyse: frequency response von meinem filter (faktoren mit denen einzelne frequenzen verstärkt/abgeschwächt wurden durch einsatz filter --> plotten)
-- **plot-funktion schreiben, mit der sich alles mögliche direkt plotten lässt velocity,  accel, gyro, signal, fft, etc . func params: x (time), y (signal werte)**
+- test: be accel-daten den ersten punkt als bias von allem abziehen
+- **fft in plot_accel und plot_gyro**
 
-- **saubere aufnahmen machen (arena): stehen/losfahren/stehen, nur stehen (drift), drehen (360/180/90)**
+- saubere aufnahmen machen (arena): stehen/losfahren/stehen, nur stehen (drift), drehen (360/180/90)
 
 - optimal: IMU benötigt nur zeit bis zum nächsten buffer, um rechenoperationen zu machen (z.b. rauschen rausrechnen) --> muss auf dem bot laufen
 
 - erdbeschleunigung/erdrotation korrekt aus IMU daten rausrechnen? bisher quick and dirty 9,81 abgezogen
+
+
+
+
+
+
+
 
 ## Theorierecherche:
 1. video tobias
@@ -99,3 +107,6 @@ IMU auslesen
 - serial to csv löschen oder deprecaten? wohin?
 - ist die beschleunigung lokal oder global? --> lokal
 - ich brauche nochmal das programm mit dem der ladestand der angeschlossenen batterie auf dem display angezeigt wird --> murmecha::display::show_info_screen;
+- plot-funktion schreiben, mit der sich alles mögliche direkt plotten lässt velocity,  accel, gyro, signal, fft, etc . func params: x (time), y (signal werte)
+- ungeklärt: beeinflusst die drehung der erde den drift über eine zeit von 15 sekunden? --> pro stunde 0,004 grad erdrotation einfluss
+- nur für gyro: drift in radian/sekunde

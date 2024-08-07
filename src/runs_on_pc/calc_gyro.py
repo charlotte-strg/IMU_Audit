@@ -6,11 +6,16 @@ import matplotlib.pyplot as plt
 gyro_df = pd.read_csv("data/imu_data_drift.csv")
 # gyro_df = pd.read_csv("data/imu_data_with_distance.csv")
 
-# Berechnung des Bias (Offsets) für jede Achse
+# Berechnung des Bias (Offsets) für jede Achse mit Mittelwert über alle Werte
 # das hier ist im stream/live nicht möglich, weil es ein mittel über alle werte verwendet
-bias_x = np.mean(gyro_df['gyro_x'])
-bias_y = np.mean(gyro_df['gyro_y'])
-bias_z = np.mean(gyro_df['gyro_z'])
+# bias_x = np.mean(gyro_df['gyro_x'])
+# bias_y = np.mean(gyro_df['gyro_y'])
+# bias_z = np.mean(gyro_df['gyro_z'])
+
+# Berechnung des Bias (Offsets) für jede Achse mit Annahme, dass erster Messpunkt Stillstand ist
+bias_x = gyro_df['gyro_x'].iloc[0]
+bias_y = gyro_df['gyro_y'].iloc[0]
+bias_z = gyro_df['gyro_z'].iloc[0]
 
 # Korrigiere die Gyroskopdaten um den Bias
 # das hier ist im stream/live nicht möglich, weil es ein mittel über alle werte verwendet
