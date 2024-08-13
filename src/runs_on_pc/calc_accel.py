@@ -1,4 +1,5 @@
 import pandas as pd
+import analysis_utils as aua
 
 # pandas dataframe aus csv einlesen
 # accel_df = pd.read_csv("data/imu_data.csv")
@@ -52,6 +53,24 @@ accel_df['distance_z'] = distance_z
 
 # gesamte Distanz (x-Achse, y-Achse, z-Achse) berechnen
 accel_df['distance_total'] = (accel_df['distance_x'] ** 2 + accel_df['distance_y'] ** 2 + accel_df['distance_z'] ** 2) ** 0.5
+
+# FFT für alle accel Spalten berechnen und in accel_df einfügen
+fourier_cols = [
+    accel_df['accel_x'],
+    accel_df['accel_y'],
+    accel_df['accel_z']
+]
+# hier vielleicht noch Fehlerausgabe, 
+# wenn len(accel_df['time_micros']) != len(fourier_cols) ? 
+fourier = [aua.get_fourier(col, accel_df['time_micros']) for col in fourier_cols]
+# warum nochmal [:1] ???
+print(len(fourier))
+print(len(accel_df))
+for x_freq, y_fourier in fourier[:1]:
+    accel_df['x_freq'] = x_freq
+    accel_df['y_fourier'] = y_fourier
+print(fourier)
+
 
 # Zeige die berechneten Werte an
 # print(accel_df.head())

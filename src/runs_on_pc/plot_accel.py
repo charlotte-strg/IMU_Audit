@@ -39,9 +39,9 @@ axs[2].legend(loc='upper right')
 axs[2].grid(True)
 
 # FFT
-# axs[3].plot(freqs, np.abs(accel_x_fft), label='FFT Accel X')
-# axs[3].plot(freqs, np.abs(accel_y_fft), label='FFT Accel Y')
-# axs[3].plot(freqs, np.abs(accel_z_fft), label='FFT Accel Z')
+# axs[3].plot(imu_df['freqs'], np.abs(accel_x_fft), label='FFT Accel X')
+# axs[3].plot(imu_df['freqs'], np.abs(accel_y_fft), label='FFT Accel Y')
+# axs[3].plot(imu_df['freqs'], np.abs(accel_z_fft), label='FFT Accel Z')
 # axs[3].set_ylabel('Amplitude')
 # axs[3].set_xlabel('Frequency [Hz]')
 # axs[3].legend(loc='upper right')
