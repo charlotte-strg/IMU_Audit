@@ -11,7 +11,6 @@ accel_df = accel_df.drop(columns=['gyro_x', 'gyro_y', 'gyro_z'])
 
 # Ziehe Erdanziehungskraft von den Beschleunigungswerten accel_z ab
 # accel_df['accel_z'] = accel_df['accel_z'] - 9.81
-accel_df['accel_z'] = accel_df['accel_z']
 
 # Zeitdifferenzen in Sekunden berechnen
 time_diff = accel_df['time_micros'].diff().fillna(0) / 1e6
@@ -76,7 +75,7 @@ accel_freq_fourier_df = pd.DataFrame({
     'accel_fourier_y':  accel_fourier_y,
     'accel_fourier_z':  accel_fourier_z,
 })
-print(f"{accel_freq_fourier_df=}")
+# print(f"{accel_freq_fourier_df=}")
 
 
 # Zeige die berechneten Werte an

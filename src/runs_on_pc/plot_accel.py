@@ -1,6 +1,5 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import numpy as np
 
 # Originalsignal plotten
 # imu_df = pd.read_csv("data/imu_data_drift.csv")

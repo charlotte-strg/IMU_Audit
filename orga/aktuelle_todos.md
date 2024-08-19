@@ -1,36 +1,22 @@
 ### FRAGEN FÜR KONSULTATION
 ----------------------------------------------------------------- 
-1. welche achsen brauchen wir für die berechnung der distanz/rotation? z-achse relevant, weil nur aufsicht in arena messbar..
-2. brauche bot, der nicht erst reagiert, wenn ich den finger auf dem prozessor habe.
-3. fragen, wie (gesamt-)rotation bestimmt werden soll
-4. distanz-problem nochmal anschauen
+1. brauche bot, der nicht erst reagiert, wenn ich den finger auf dem prozessor habe.
+2. distanz-problem nochmal anschauen
 
 ### AKTUELL
 -----------------------------------------------------------------
-## Aufgaben für nächste Zeit: Herausfinden, wie gut IMU ist. Dafür:
-
 - signal to noise ratio berechnen für mein csv signal
 - charakterisierung für signal (z.b. energie, irgendein maß, nicht amplitude) --> vergleich, wurzel der summe der quadrate von allen samples (mit/ohne lp vergleich)
-
-- orientierung im raum algo von metric mal googlen
+- **orientierung im raum algo von metric mal googlen**
 - orientierung im raum algo von metric implementieren
-
 - low pass hardware aktivieren und testen
 - vergleich lp hardware und lp programmiert (signal to noise ratio in db)
 - mal versuchen: referenzsystem ändern - schwerkraft rausrechnen z.b. mit bandpass 
 - analyse: frequency response von meinem filter (faktoren mit denen einzelne frequenzen verstärkt/abgeschwächt wurden durch einsatz filter --> plotten)
-- test: be accel-daten den ersten punkt als bias von allem abziehen
 - kontinuierliches aufnehmen für längere zeit
-
-- saubere aufnahmen machen (arena): stehen/losfahren/stehen, nur stehen (drift), drehen (360/180/90)
-
+- **saubere backup-aufnahmen machen (arena): stehen/losfahren/stehen, nur stehen (drift), drehen (360/180/90)**
 - optimal: IMU benötigt nur zeit bis zum nächsten buffer, um rechenoperationen zu machen (z.b. rauschen rausrechnen) --> muss auf dem bot laufen
-
-- **in quaternionen ist 3D-rotation darstellbar, metric-algo gibt auch in quaternionen aus, YT-videos schauen**
-
-- **erdbeschleunigung/erdrotation korrekt aus IMU daten rausrechnen? bisher quick and dirty 9,81 abgezogen --> nicht korrekt, weil wir durch die 9,81 wissen, ob es auf dem kopf liegt, rampe hochfährt etc. --> wieder rausnehmen!**
-
-
+- **in quaternionen ist 3D-rotation darstellbar, metric-algo gibt auch in quaternionen aus, YT-videos schauen, keine eulerwinkel benutzen**
 
 
 
@@ -42,9 +28,16 @@
 2. was sind lineare (signal-)filter/finite impulse response?
 3. diskrete fourier transformation verstehen und zusammenfassung
 4. types of noise verstehen und zusammenfassen, fokus auf zusammenhang mit fft
+5. quaternionen/gesamtrotation/irreale zahlen
 
 ## Sonstiges/Nice to have:
-- jupyter notebook aufteilen in mehrere notebooks mit einzelfunktionen (daten erstellen, fft-analyse, plotten, etc.) und diese durch python-file sowohl hintereinander durchlaufen lassen können als auch in notebook zwischenschritte/viz nachvollziehen können, wenn man will
+- kann mit python schreiben, muss aber später in c++ funktionieren mit libs, die arduino-kompatibel sind (liste angeblich auf platformIO)
+- experiment in der zukunft auf das ich hinarbeite: strecke in der arena zurücklegen, messen, vergleiche mit gemessener strecke auf IMU (das gleiche für drehung)
+- sliding window für integration: wenn mit gemessenen datensamples gearbeitet wird ist die versuchung groß, das gesamte array zur berechnung zu verwenden. das geht bei live-messungen aber nicht, weil wir nicht gleichzeitig alle datenpunkte vorliegen haben. außerdem ist es praktisch, einen datenpunkt "aus der zukunft" zu haben, wenn man integriert, weil es dann entspannter wird, was auch immer das bedeutet
+
+
+### ON HOLD
+-----------------------------------------------------------------
 - möglichkeiten für gute visualisierung zum vergleich unterschiedlicher varianten (lowpass, kein lowpass, lowpass hardware, etc.), schön, aber momentan nicht am wichtigsten
 max vorschlag: 
 	signal: x,y listen
@@ -54,13 +47,7 @@ charlottes vorschlag:
 	plot_signal(signal, [lp-hard, lp, normal], params)
 	plot_fft(...)
 	plot_signal_fft(...)
-- kann mit python schreiben, muss aber später in c++ funktionieren mit libs, die arduino-kompatibel sind (liste angeblich auf platformIO)
-- experiment in der zukunft auf dass ich hinarbeite: strecke in der arena zurücklegen, messen, vergleiche mit gemessener strecke auf IMU (das gleiche für drehung)
-- sliding window für integration: wenn mit gemessenen datensamples gearbeitet wird ist die versuchung groß, das gesamte array zur berechnung zu verwenden. das geht bei live-messungen aber nicht, weil wir nicht gleichzeitig alle datenpunkte vorliegen haben. außerdem ist es praktisch, einen datenpunkt "aus der zukunft" zu haben, wenn man integriert, weil es dann entspannter wird, was auch immer das bedeutet
 
-
-### ON HOLD
------------------------------------------------------------------
 Kalibrierung IMU:
 1. signal von imu so sauber wie möglich filtern (offset rausrechnen, kalibrieren etc.)?
 2. Wasserwaage für IMU bauen/offset herausfinden
@@ -69,14 +56,11 @@ Kalibrierung IMU:
 Sonstiges:
 - mit repo von ivan dashboard ausprobieren: funktioniert das auf windows? brauche ich open gl?
 
-Plotten:
-1. Komplettes dashboard erstellen:
-	a) alle Sensoren einzeln plotten
-	b) IMU (accel, gyro) plotten (10 sek), auf welchen frequenzen ist das Rauschen am stärksten?
-	c) sensoren plotten für bestimmte unterschiede, 
-	z.b. bei 90 grad drehung, wo ist NOSW, unten/oben
-2. khz aufnehmen (1 sek)
-3. stehen (0,5 sek), dann losfahren, währenddessen aufnehmen
+
+
+
+
+
 
 
 ### ERLEDIGT
@@ -113,3 +97,16 @@ IMU auslesen
 - ungeklärt: beeinflusst die drehung der erde den drift über eine zeit von 15 sekunden? --> pro stunde 0,004 grad erdrotation einfluss
 - nur für gyro: drift in radian/sekunde
 - fft in plot_accel und plot_gyro
+- welche achsen brauchen wir für die berechnung der distanz/rotation? z-achse ist relevant, weil nur aufsicht in arena messbar
+- fragen, wie (gesamt-)rotation bestimmt werden soll
+- test: bei accel-daten den ersten punkt als bias von allem abziehen --> wieder rausgenommen, weil das erst geht, nachdem man das rauschen entfernt wurde
+- Plotten:
+	1. Komplettes dashboard erstellen:
+		a) alle Sensoren einzeln plotten
+		b) IMU (accel, gyro) plotten (10 sek), auf welchen frequenzen ist das Rauschen am stärksten?
+		c) sensoren plotten für bestimmte unterschiede, 
+		z.b. bei 90 grad drehung, wo ist NOSW, unten/oben
+	2. khz aufnehmen (1 sek)
+	3. stehen (0,5 sek), dann losfahren, währenddessen aufnehmen
+- verworfen: jupyter notebook aufteilen in mehrere notebooks mit einzelfunktionen (daten erstellen, fft-analyse, plotten, etc.) und diese durch python-file sowohl hintereinander durchlaufen lassen können als auch in notebook zwischenschritte/viz nachvollziehen können, wenn man will
+- erdbeschleunigung/erdrotation korrekt aus IMU daten rausrechnen? bisher quick and dirty 9,81 abgezogen --> nicht korrekt, weil wir durch die 9,81 wissen, ob es auf dem kopf liegt, rampe hochfährt etc. --> wieder rausnehmen!
