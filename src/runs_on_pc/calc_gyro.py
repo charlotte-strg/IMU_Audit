@@ -1,10 +1,8 @@
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 
 # pandas dataframe aus csv einlesen
 gyro_df = pd.read_csv("data/imu_data_drift.csv")
-# gyro_df = pd.read_csv("data/imu_data_with_distance.csv")
 
 # Berechnung des Bias (Offsets) für jede Achse mit Mittelwert über alle Werte
 # das hier ist im stream/live nicht möglich, weil es ein mittel über alle werte verwendet
@@ -54,7 +52,7 @@ gyro_df['rotation_y'] = rotation_y
 gyro_df['rotation_z'] = rotation_z
 
 # Berechnung der Gesamtrotation (Magnitude der Rotationsvektoren)
-# macht das sinn? 
+# macht das sinn? --> in quaternionen ist 3d-rotation darstellbar
 gyro_df['total_rotation'] = np.sqrt(gyro_df['rotation_x']**2 + gyro_df['rotation_y']**2 + gyro_df['rotation_z']**2)
 
 # Zeige die berechneten Werte an

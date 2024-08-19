@@ -20,13 +20,15 @@
 - mal versuchen: referenzsystem ändern - schwerkraft rausrechnen z.b. mit bandpass 
 - analyse: frequency response von meinem filter (faktoren mit denen einzelne frequenzen verstärkt/abgeschwächt wurden durch einsatz filter --> plotten)
 - test: be accel-daten den ersten punkt als bias von allem abziehen
-- **fft in plot_accel und plot_gyro**
+- kontinuierliches aufnehmen für längere zeit
 
 - saubere aufnahmen machen (arena): stehen/losfahren/stehen, nur stehen (drift), drehen (360/180/90)
 
 - optimal: IMU benötigt nur zeit bis zum nächsten buffer, um rechenoperationen zu machen (z.b. rauschen rausrechnen) --> muss auf dem bot laufen
 
-- erdbeschleunigung/erdrotation korrekt aus IMU daten rausrechnen? bisher quick and dirty 9,81 abgezogen
+- **in quaternionen ist 3D-rotation darstellbar, metric-algo gibt auch in quaternionen aus, YT-videos schauen**
+
+- **erdbeschleunigung/erdrotation korrekt aus IMU daten rausrechnen? bisher quick and dirty 9,81 abgezogen --> nicht korrekt, weil wir durch die 9,81 wissen, ob es auf dem kopf liegt, rampe hochfährt etc. --> wieder rausnehmen!**
 
 
 
@@ -110,3 +112,4 @@ IMU auslesen
 - plot-funktion schreiben, mit der sich alles mögliche direkt plotten lässt velocity,  accel, gyro, signal, fft, etc . func params: x (time), y (signal werte)
 - ungeklärt: beeinflusst die drehung der erde den drift über eine zeit von 15 sekunden? --> pro stunde 0,004 grad erdrotation einfluss
 - nur für gyro: drift in radian/sekunde
+- fft in plot_accel und plot_gyro

@@ -8,9 +8,16 @@ import numpy as np
 # Distanz/Geschwindigkeit plotten
 # imu_df = pd.read_csv("data/imu_data_drift_with_distance.csv")
 imu_df = pd.read_csv("data/backup_imu_data_with_distance.csv")
+imu_fourier_df = pd.read_csv("data/backup_imu_data_with_distance_fourier.csv")
 
-# Subplots erstellen
-fig, axs = plt.subplots(3, 1, figsize=(10, 15), sharex=True)
+# Hauptfiguren erstellen
+fig = plt.figure(figsize=(12, 10))
+
+# Erste Subfigur (Zeitbasiert)
+subfigs = fig.subfigures(2, 1, height_ratios=[3, 1])
+
+# Subfig 1: Beschleunigung, Geschwindigkeit und Distanz
+axs = subfigs[0].subplots(3, 1, sharex=True)
 
 # Beschleunigung/Accel
 axs[0].plot(imu_df['time_micros'] / 1e6, imu_df['accel_x'], label='Accel X')
@@ -38,14 +45,28 @@ axs[2].set_xlabel('Time [s]')
 axs[2].legend(loc='upper right')
 axs[2].grid(True)
 
+# Subfig 1: Automatische Skalierung der x-Achse (Zeit)
+for ax in axs:
+    ax.autoscale(enable=True, axis='x', tight=True)
+
+# Subfig 2: FFT-Daten
+ax_fft = subfigs[1].subplots(1, 1)
+
 # FFT
-# axs[3].plot(imu_df['freqs'], np.abs(accel_x_fft), label='FFT Accel X')
-# axs[3].plot(imu_df['freqs'], np.abs(accel_y_fft), label='FFT Accel Y')
-# axs[3].plot(imu_df['freqs'], np.abs(accel_z_fft), label='FFT Accel Z')
-# axs[3].set_ylabel('Amplitude')
-# axs[3].set_xlabel('Frequency [Hz]')
-# axs[3].legend(loc='upper right')
-# axs[3].grid(True)
+ax_fft.plot(imu_fourier_df['accel_freq'], imu_fourier_df['accel_fourier_x'], label='FFT Accel X')
+ax_fft.plot(imu_fourier_df['accel_freq'], imu_fourier_df['accel_fourier_y'], label='FFT Accel Y')
+ax_fft.plot(imu_fourier_df['accel_freq'], imu_fourier_df['accel_fourier_z'], label='FFT Accel Z')
+ax_fft.set_ylabel('Amplitude')
+ax_fft.set_xlabel('Frequency [Hz]')
+ax_fft.legend(loc='upper right')
+ax_fft.grid(True)
+
+# FFT Subplot automatisch skalieren (Frequenz-Achse)
+ax_fft.autoscale(enable=True, axis='x', tight=True)
+ax_fft.set_yscale('log')
+# ax_fft.set_xlim(-0.0001, 0.05)
+# ax_fft.set_ylim(-100, 1000)
+# ax_fft.autoscale(enable=True, axis='y', tight=True)
 
 # Anzeige
 plt.show()
