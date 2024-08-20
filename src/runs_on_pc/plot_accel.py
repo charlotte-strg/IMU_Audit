@@ -10,7 +10,7 @@ imu_df = pd.read_csv("data/backup_imu_data_with_distance.csv")
 imu_fourier_df = pd.read_csv("data/backup_imu_data_with_distance_fourier.csv")
 
 # Hauptfiguren erstellen
-fig = plt.figure(figsize=(12, 10))
+fig = plt.figure(figsize=(16, 8))
 
 # Erste Subfigur (Zeitbasiert)
 subfigs = fig.subfigures(2, 1, height_ratios=[3, 1])

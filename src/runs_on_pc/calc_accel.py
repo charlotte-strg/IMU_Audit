@@ -55,6 +55,16 @@ accel_df['distance_z'] = distance_z
 # gesamte Distanz (x-Achse, y-Achse, z-Achse) berechnen
 accel_df['distance_total'] = (accel_df['distance_x'] ** 2 + accel_df['distance_y'] ** 2 + accel_df['distance_z'] ** 2) ** 0.5
 
+#################################### LOWPASS FILTER ####################################
+# lowpass filtern der Distanz
+# cutoff = 0.1
+# fs = 1/time_diff.mean()
+# print(f"{fs=}")
+# accel_df['distance_total'] = aua.lowpass_filter(accel_df['distance_total'], cutoff, fs)
+
+
+
+#################################### FFT ####################################
 # FFT für alle accel Spalten berechnen und in neues df einfügen
 accel_x_x_freq, accel_x_y_fourier = aua.get_fourier(accel_df['accel_x'], accel_df['time_micros'])
 accel_y_x_freq, accel_y_y_fourier = aua.get_fourier(accel_df['accel_y'], accel_df['time_micros'])
@@ -63,7 +73,7 @@ accel_z_x_freq, accel_z_y_fourier = aua.get_fourier(accel_df['accel_z'], accel_d
 # da alle frequenzen gleich für accel_x, accel_y und accel_z nur eine behalten. vergleichbar zu der einen zeitspalte in accel_df
 accel_freq = accel_x_x_freq
 
-# abs berechnen um aus imaginären werten reele zu machen, mathe shit halt
+# abs berechnen um aus imaginären werten reelle zu machen, mathe shit halt
 # und direkt umbenennung da es jetzt nur noch accel_freq statt accel_x_x_freq gibt, können "accel_x_y_fourier" namen vereinfacht werden
 accel_fourier_x = np.abs(accel_x_y_fourier)
 accel_fourier_y = np.abs(accel_y_y_fourier)

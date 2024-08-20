@@ -7,7 +7,6 @@
 -----------------------------------------------------------------
 - signal to noise ratio berechnen für mein csv signal
 - charakterisierung für signal (z.b. energie, irgendein maß, nicht amplitude) --> vergleich, wurzel der summe der quadrate von allen samples (mit/ohne lp vergleich)
-- orientierung im raum algo von madgwick mal googlen
 - **orientierung im raum algo von madgwick verstehen**
 - orientierung im raum algo von madgwick implementieren. mögliche vorbilder:
 	--> https://github.com/morgil/madgwick_py
@@ -116,3 +115,4 @@ IMU auslesen
 	3. stehen (0,5 sek), dann losfahren, währenddessen aufnehmen
 - verworfen: jupyter notebook aufteilen in mehrere notebooks mit einzelfunktionen (daten erstellen, fft-analyse, plotten, etc.) und diese durch python-file sowohl hintereinander durchlaufen lassen können als auch in notebook zwischenschritte/viz nachvollziehen können, wenn man will
 - erdbeschleunigung/erdrotation korrekt aus IMU daten rausrechnen? bisher quick and dirty 9,81 abgezogen --> nicht korrekt, weil wir durch die 9,81 wissen, ob es auf dem kopf liegt, rampe hochfährt etc. --> wieder rausnehmen!
+- orientierung im raum algo von madgwick mal googlen
