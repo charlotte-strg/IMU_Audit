@@ -11,15 +11,14 @@
 	--> https://github.com/morgil/madgwick_py
 	--> https://github.com/rfayat/madgwick_imu/tree/master (mit beispiel und IMU-daten aus csv)
 	--> https://pypi.org/project/AHRS/ (py-Paket inkl. Madgwick Implementierung)
-
 - low pass hardware aktivieren und testen
 - vergleich lp hardware und lp programmiert (signal to noise ratio in db)
 - mal versuchen: referenzsystem ändern - schwerkraft rausrechnen z.b. mit bandpass 
 - analyse: frequency response von meinem filter (faktoren mit denen einzelne frequenzen verstärkt/abgeschwächt wurden durch einsatz filter --> plotten)
-- kontinuierliches aufnehmen für längere zeit
+- kontinuierliches aufnehmen für längere zeit --> geht jetzt für accel-live-daten, bisher ohne speicherung
 - **saubere backup-aufnahmen machen (arena): stehen/losfahren/stehen, nur stehen (drift), drehen (360/180/90)**
 - optimal: IMU benötigt nur zeit bis zum nächsten buffer, um rechenoperationen zu machen (z.b. rauschen rausrechnen) --> muss auf dem bot laufen
-- distanz-berechnungen laufen auf bot
+- distanz-berechnungen laufen auf bot (fertig für accel, gyro/rotation noch einarbeiten, sobald berechnung mit madgwick klar ist)
 
 
 

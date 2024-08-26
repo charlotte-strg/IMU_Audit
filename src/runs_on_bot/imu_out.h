@@ -8,6 +8,7 @@
 #include "imu_data.h"
 
 void custom_setup();
+void custom_loop_position();
 void custom_loop();
 
 #endif
