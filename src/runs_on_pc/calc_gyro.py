@@ -85,5 +85,5 @@ gyro_freq_fourier_df = pd.DataFrame({
 # print(gyro_df.tail)
 
 # Speichere die berechneten Werte in einer neuen CSV-Datei
-gyro_df.to_csv("data/imu_data_with_rotation.csv", index=False)
+gyro_df.to_csv("data/backup_imu_data_with_rotation.csv", index=False)
 gyro_freq_fourier_df.to_csv("data/backup_imu_data_with_rotation_fourier.csv")

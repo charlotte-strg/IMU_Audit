@@ -1,7 +1,6 @@
 ### FRAGEN FÜR KONSULTATION
 ----------------------------------------------------------------- 
 1. brauche bot, der nicht erst reagiert, wenn ich den finger auf dem prozessor habe.
-2. distanz-problem nochmal anschauen
 
 ### AKTUELL
 -----------------------------------------------------------------
@@ -20,8 +19,8 @@
 - kontinuierliches aufnehmen für längere zeit
 - **saubere backup-aufnahmen machen (arena): stehen/losfahren/stehen, nur stehen (drift), drehen (360/180/90)**
 - optimal: IMU benötigt nur zeit bis zum nächsten buffer, um rechenoperationen zu machen (z.b. rauschen rausrechnen) --> muss auf dem bot laufen
-- **in quaternionen ist 3D-rotation darstellbar, metric-algo gibt auch in quaternionen aus, YT-videos schauen, keine eulerwinkel benutzen**
-- **MA-daten in github sichern**
+- distanz-berechnungen laufen auf bot
+
 
 
 
@@ -116,3 +115,6 @@ IMU auslesen
 - verworfen: jupyter notebook aufteilen in mehrere notebooks mit einzelfunktionen (daten erstellen, fft-analyse, plotten, etc.) und diese durch python-file sowohl hintereinander durchlaufen lassen können als auch in notebook zwischenschritte/viz nachvollziehen können, wenn man will
 - erdbeschleunigung/erdrotation korrekt aus IMU daten rausrechnen? bisher quick and dirty 9,81 abgezogen --> nicht korrekt, weil wir durch die 9,81 wissen, ob es auf dem kopf liegt, rampe hochfährt etc. --> wieder rausnehmen!
 - orientierung im raum algo von madgwick mal googlen
+- distanz-problem nochmal anschauen
+- MA-daten in github sichern
+- in quaternionen ist 3D-rotation darstellbar, madgwick-algo gibt auch in quaternionen aus, YT-videos schauen, keine eulerwinkel benutzen
