@@ -20,8 +20,6 @@ float recordingTimeInMillis;
 
 unsigned long startTime; // Variable to store the unsigned long startTime
 unsigned long currentTime; // time at the start of the sampling process / starting point of custom loop function
-// unsigned long oldTime;
-// unsigned long sampleDeltaTime; // time passed since last sample
 unsigned long startDeltaTime; // time passed since start
 
 IMUData buffer[bufferSize]; // initialize buffer at fixed size

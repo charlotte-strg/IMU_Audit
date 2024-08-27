@@ -5,9 +5,10 @@ import matplotlib.pyplot as plt
 # imu_df = pd.read_csv("data/imu_data_drift.csv")
 
 # Distanz/Geschwindigkeit plotten
-# imu_df = pd.read_csv("data/imu_data_drift_with_distance.csv")
-imu_df = pd.read_csv("data/backup_imu_data_with_distance.csv")
-imu_fourier_df = pd.read_csv("data/backup_imu_data_with_distance_fourier.csv")
+imu_df = pd.read_csv("data/imu_data_drift_with_distance.csv")
+# imu_df = pd.read_csv("data/backup_imu_data_with_distance.csv")
+# imu_fourier_df = pd.read_csv("data/backup_imu_data_with_distance_fourier.csv")
+imu_fourier_df = pd.read_csv("data/imu_data_drift_with_distance_fourier.csv")
 
 # Hauptfiguren erstellen
 fig = plt.figure(figsize=(16, 8))

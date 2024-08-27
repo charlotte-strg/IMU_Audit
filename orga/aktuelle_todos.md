@@ -1,6 +1,7 @@
 ### FRAGEN FÜR KONSULTATION
 ----------------------------------------------------------------- 
-1. brauche bot, der nicht erst reagiert, wenn ich den finger auf dem prozessor habe.
+1. brauche bot, der fährt.
+2. woran erkenne ich gute einstellungen für den lp-filter? cutoff, order?
 
 ### AKTUELL
 -----------------------------------------------------------------
@@ -11,7 +12,8 @@
 	--> https://github.com/morgil/madgwick_py
 	--> https://github.com/rfayat/madgwick_imu/tree/master (mit beispiel und IMU-daten aus csv)
 	--> https://pypi.org/project/AHRS/ (py-Paket inkl. Madgwick Implementierung)
-- low pass hardware aktivieren und testen
+	--> C++ implementierung im original-paper
+- low pass hardware aktivieren und testen, LPF2 (siehe IMU-handbuch)
 - vergleich lp hardware und lp programmiert (signal to noise ratio in db)
 - mal versuchen: referenzsystem ändern - schwerkraft rausrechnen z.b. mit bandpass 
 - analyse: frequency response von meinem filter (faktoren mit denen einzelne frequenzen verstärkt/abgeschwächt wurden durch einsatz filter --> plotten)
@@ -19,6 +21,7 @@
 - **saubere backup-aufnahmen machen (arena): stehen/losfahren/stehen, nur stehen (drift), drehen (360/180/90)**
 - optimal: IMU benötigt nur zeit bis zum nächsten buffer, um rechenoperationen zu machen (z.b. rauschen rausrechnen) --> muss auf dem bot laufen
 - distanz-berechnungen laufen auf bot (fertig für accel, gyro/rotation noch einarbeiten, sobald berechnung mit madgwick klar ist)
+
 
 
 
@@ -117,3 +120,4 @@ IMU auslesen
 - distanz-problem nochmal anschauen
 - MA-daten in github sichern
 - in quaternionen ist 3D-rotation darstellbar, madgwick-algo gibt auch in quaternionen aus, YT-videos schauen, keine eulerwinkel benutzen
+- lowpass software integrieren in calc-dateien

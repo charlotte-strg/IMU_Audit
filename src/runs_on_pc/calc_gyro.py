@@ -31,6 +31,17 @@ gyro_df = gyro_df.drop(columns=['accel_x', 'accel_y', 'accel_z'])
 # Zeitdifferenzen in Sekunden berechnen
 time_diff = gyro_df['time_micros'].diff().fillna(0) / 1e6
 
+#################################### LOWPASS FILTER ####################################
+cutoff = 50  # cutoff frequency in Hz
+# TODO: Problem: Frequenz, die hier genutzt wird,
+# ist eine andere als für FFT (accel_freq) --> anpassen!
+fs = 1/time_diff.mean()  # sampling frequency in Hz
+# macht es sinn, hier für x, y und z die gleichen frequenzen zu filtern?
+gyro_df['gyro_x'] = aua.butter_lowpass_filter(gyro_df['gyro_x'], cutoff, fs, order=5)
+gyro_df['gyro_y'] = aua.butter_lowpass_filter(gyro_df['gyro_y'], cutoff, fs, order=5)
+gyro_df['gyro_z'] = aua.butter_lowpass_filter(gyro_df['gyro_z'], cutoff, fs, order=5)
+
+
 # Initialisiere Rotationslisten für x, y und z
 rotation_x = [0]  # Anfangswinkel für X
 rotation_y = [0]  # Anfangswinkel für Y
@@ -85,5 +96,5 @@ gyro_freq_fourier_df = pd.DataFrame({
 # print(gyro_df.tail)
 
 # Speichere die berechneten Werte in einer neuen CSV-Datei
-gyro_df.to_csv("data/backup_imu_data_with_rotation.csv", index=False)
-gyro_freq_fourier_df.to_csv("data/backup_imu_data_with_rotation_fourier.csv")
+gyro_df.to_csv("data/imu_data_drift_with_rotation.csv", index=False)
+gyro_freq_fourier_df.to_csv("data/imu_data_drift_with_rotation_fourier.csv")

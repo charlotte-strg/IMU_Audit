@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 # imu_df = pd.read_csv("data/imu_data_drift.csv")
 
 # Rotation plotten
-imu_df = pd.read_csv("data/backup_imu_data_with_rotation.csv")
-imu_fourier_df = pd.read_csv("data/backup_imu_data_with_rotation_fourier.csv")
+imu_df = pd.read_csv("data/imu_data_drift_with_rotation.csv")
+imu_fourier_df = pd.read_csv("data/imu_data_drift_with_rotation_fourier.csv")
 
 # Hauptfiguren erstellen
 fig = plt.figure(figsize=(12, 10))

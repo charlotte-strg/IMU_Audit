@@ -46,7 +46,7 @@ def butter_lowpass(cutoff, fs, order=5):
 
     nyq = 0.5 * fs  # Nyquist-Frequenz
     normal_cutoff = cutoff / nyq
-    print(f"{normal_cutoff=}")
+    # print(f"{normal_cutoff=}")
     b, a = butter(order, normal_cutoff, btype='low', analog=False)
     return b, a
 
@@ -56,6 +56,12 @@ def butter_lowpass_filter(data, cutoff, fs, order=5):
     Wendet einen Butterworth-Tiefpassfilter auf ein Signal an.
     """
 
+    first_sample_offset = data[0]
+    data_centered = data - first_sample_offset
+
     b, a = butter_lowpass(cutoff, fs, order=order)
-    y = lfilter(b, a, data)
+    y_centered = lfilter(b, a, data_centered)
+
+    y = y_centered + first_sample_offset
+
     return y

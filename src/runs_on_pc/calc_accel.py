@@ -14,7 +14,15 @@ accel_df = accel_df.drop(columns=['gyro_x', 'gyro_y', 'gyro_z'])
 
 # Zeitdifferenzen in Sekunden berechnen
 time_diff = accel_df['time_micros'].diff().fillna(0) / 1e6
-# print(time_diff.head())
+
+#################################### LOWPASS FILTER ####################################
+cutoff = 50  # cutoff frequency in Hz
+fs = 1/time_diff.mean()  # sampling frequency in Hz
+# macht es sinn, hier für x, y und z die gleichen frequenzen zu filtern?
+accel_df['accel_x'] = aua.butter_lowpass_filter(accel_df['accel_x'], cutoff, fs, order=5)
+accel_df['accel_y'] = aua.butter_lowpass_filter(accel_df['accel_y'], cutoff, fs, order=5)
+accel_df['accel_z'] = aua.butter_lowpass_filter(accel_df['accel_z'], cutoff, fs, order=5)
+
 
 # Initialisiere Geschwindigkeits- und Distanzlisten für x, y und z
 velocity_x = [0]
@@ -55,22 +63,14 @@ accel_df['distance_z'] = distance_z
 # gesamte Distanz (x-Achse, y-Achse, z-Achse) berechnen
 accel_df['distance_total'] = (accel_df['distance_x'] ** 2 + accel_df['distance_y'] ** 2 + accel_df['distance_z'] ** 2) ** 0.5
 
-#################################### LOWPASS FILTER ####################################
-# lowpass filtern der Distanz
-# cutoff = 0.1
-# fs = 1/time_diff.mean()
-# print(f"{fs=}")
-# accel_df['distance_total'] = aua.lowpass_filter(accel_df['distance_total'], cutoff, fs)
-
-
 
 #################################### FFT ####################################
-# FFT für alle accel Spalten berechnen und in neues df einfügen
+# # FFT für alle accel Spalten berechnen und in neues df einfügen
 accel_x_x_freq, accel_x_y_fourier = aua.get_fourier(accel_df['accel_x'], accel_df['time_micros'])
 accel_y_x_freq, accel_y_y_fourier = aua.get_fourier(accel_df['accel_y'], accel_df['time_micros'])
 accel_z_x_freq, accel_z_y_fourier = aua.get_fourier(accel_df['accel_z'], accel_df['time_micros'])
 
-# da alle frequenzen gleich für accel_x, accel_y und accel_z nur eine behalten. vergleichbar zu der einen zeitspalte in accel_df
+# # da alle frequenzen gleich für accel_x, accel_y und accel_z nur eine behalten. vergleichbar zu der einen zeitspalte in accel_df
 accel_freq = accel_x_x_freq
 
 # abs berechnen um aus imaginären werten reelle zu machen, mathe shit halt
@@ -94,5 +94,5 @@ accel_freq_fourier_df = pd.DataFrame({
 
 # Speichere den DataFrame in einer neuen CSV-Datei
 # accel_df.to_csv("data/imu_data_with_distance.csv", index=False)
-accel_df.to_csv("data/backup_imu_data_with_distance.csv")
-accel_freq_fourier_df.to_csv("data/backup_imu_data_with_distance_fourier.csv")
+accel_df.to_csv("data/imu_data_drift_with_distance.csv")
+accel_freq_fourier_df.to_csv("data/imu_data_drift_with_distance_fourier.csv")
