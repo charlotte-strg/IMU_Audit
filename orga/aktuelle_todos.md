@@ -8,18 +8,12 @@
 - signal to noise ratio berechnen für mein csv signal
 - charakterisierung für signal (z.b. energie, irgendein maß, nicht amplitude) --> vergleich, wurzel der summe der quadrate von allen samples (mit/ohne lp vergleich)
 - **orientierung im raum algo von madgwick verstehen**
-- orientierung im raum algo von madgwick implementieren. mögliche vorbilder:
-	--> https://github.com/morgil/madgwick_py
-	--> https://github.com/rfayat/madgwick_imu/tree/master (mit beispiel und IMU-daten aus csv)
-	--> https://pypi.org/project/AHRS/ (py-Paket inkl. Madgwick Implementierung)
-	--> C++ implementierung im original-paper
 - low pass hardware aktivieren und testen, LPF2 (siehe IMU-handbuch)
 - vergleich lp hardware und lp programmiert (signal to noise ratio in db)
 - mal versuchen: referenzsystem ändern - schwerkraft rausrechnen z.b. mit bandpass 
 - analyse: frequency response von meinem filter (faktoren mit denen einzelne frequenzen verstärkt/abgeschwächt wurden durch einsatz filter --> plotten)
-- kontinuierliches aufnehmen für längere zeit --> geht jetzt für accel-live-daten, bisher ohne speicherung
 - **saubere backup-aufnahmen machen (arena): stehen/losfahren/stehen, nur stehen (drift), drehen (360/180/90)**
-- optimal: IMU benötigt nur zeit bis zum nächsten buffer, um rechenoperationen zu machen (z.b. rauschen rausrechnen) --> muss auf dem bot laufen
+- rauschen rausrechnen (läuft auf bot)
 - distanz-berechnungen laufen auf bot (fertig für accel, gyro/rotation noch einarbeiten, sobald berechnung mit madgwick klar ist)
 
 
@@ -35,6 +29,7 @@
 3. diskrete fourier transformation verstehen und zusammenfassung
 4. types of noise verstehen und zusammenfassen, fokus auf zusammenhang mit fft
 5. quaternionen/gesamtrotation/irreale zahlen
+6. madgwick/mahony
 
 ## Sonstiges/Nice to have:
 - kann mit python schreiben, muss aber später in c++ funktionieren mit libs, die arduino-kompatibel sind (liste angeblich auf platformIO)
@@ -121,3 +116,10 @@ IMU auslesen
 - MA-daten in github sichern
 - in quaternionen ist 3D-rotation darstellbar, madgwick-algo gibt auch in quaternionen aus, YT-videos schauen, keine eulerwinkel benutzen
 - lowpass software integrieren in calc-dateien
+- orientierung im raum algo von madgwick implementieren. mögliche vorbilder:
+	--> https://github.com/morgil/madgwick_py
+	--> https://github.com/rfayat/madgwick_imu/tree/master (mit beispiel und IMU-daten aus csv)
+	--> https://pypi.org/project/AHRS/ (py-Paket inkl. Madgwick Implementierung)
+	--> C++ implementierung im original-paper
+- kontinuierliches aufnehmen für längere zeit --> geht jetzt für accel-live-daten, bisher ohne speicherung
+- optimal: IMU benötigt nur zeit bis zum nächsten buffer, um rechenoperationen zu machen (z.b. rauschen rausrechnen) --> muss auf dem bot laufen
