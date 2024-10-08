@@ -1,45 +1,28 @@
 ### FRAGEN FÜR KONSULTATION
 ----------------------------------------------------------------- 
 1. brauche bot, der fährt.
-2. woran erkenne ich gute einstellungen für den lp-filter? cutoff, order?
 
 ### AKTUELL
 -----------------------------------------------------------------
-- signal to noise ratio berechnen für mein csv signal
-- charakterisierung für signal (z.b. energie, irgendein maß, nicht amplitude) --> vergleich, wurzel der summe der quadrate von allen samples (mit/ohne lp vergleich)
+- **theorieteil in overleaf aufsetzen**
+
 - **orientierung im raum algo von madgwick verstehen**
-- low pass hardware aktivieren und testen, LPF2 (siehe IMU-handbuch)
-- vergleich lp hardware und lp programmiert (signal to noise ratio in db)
-- mal versuchen: referenzsystem ändern - schwerkraft rausrechnen z.b. mit bandpass 
-- analyse: frequency response von meinem filter (faktoren mit denen einzelne frequenzen verstärkt/abgeschwächt wurden durch einsatz filter --> plotten)
-- **saubere backup-aufnahmen machen (arena): stehen/losfahren/stehen, nur stehen (drift), drehen (360/180/90)**
-- rauschen rausrechnen (läuft auf bot)
-- distanz-berechnungen laufen auf bot (fertig für accel, gyro/rotation noch einarbeiten, sobald berechnung mit madgwick klar ist)
+- **madgwick python fertigschreiben**
 
+- **low pass hardware aktivieren und testen, LPF2 (siehe IMU-handbuch)**
+- **vergleich lp hardware und lp programmiert (signal to noise ratio in db)**
 
+- **rauschen rausrechnen (läuft auf bot)**
+- **distanz-berechnungen laufen auf bot (fertig für accel, gyro/rotation noch einarbeiten, sobald berechnung mit madgwick klar ist)**
 
-
-
-
-
-
-## Theorierecherche:
-1. video tobias
-2. was sind lineare (signal-)filter/finite impulse response?
-3. diskrete fourier transformation verstehen und zusammenfassung
-4. types of noise verstehen und zusammenfassen, fokus auf zusammenhang mit fft
-5. quaternionen/gesamtrotation/irreale zahlen
-6. madgwick/mahony
-
-## Sonstiges/Nice to have:
-- kann mit python schreiben, muss aber später in c++ funktionieren mit libs, die arduino-kompatibel sind (liste angeblich auf platformIO)
-- experiment in der zukunft auf das ich hinarbeite: strecke in der arena zurücklegen, messen, vergleiche mit gemessener strecke auf IMU (das gleiche für drehung)
-- sliding window für integration: wenn mit gemessenen datensamples gearbeitet wird ist die versuchung groß, das gesamte array zur berechnung zu verwenden. das geht bei live-messungen aber nicht, weil wir nicht gleichzeitig alle datenpunkte vorliegen haben. außerdem ist es praktisch, einen datenpunkt "aus der zukunft" zu haben, wenn man integriert, weil es dann entspannter wird, was auch immer das bedeutet
-
-
-### ON HOLD
------------------------------------------------------------------
-- möglichkeiten für gute visualisierung zum vergleich unterschiedlicher varianten (lowpass, kein lowpass, lowpass hardware, etc.), schön, aber momentan nicht am wichtigsten
+- masterfunktion erstellen, die auf bot läuft mit folgenden optionalen parametern:
+	accel/gyro/weg/rotation daten über wifi live senden?
+	lowpass berechnen? hard/soft lp? mit welchem cutoff?
+	berechnung fourier transformation?
+	berechnung weg/rotation?
+	berechnung madgwick/mahony/kalman?
+	visualisierung gewünscht? wovon?
+- masterfunktion:
 max vorschlag: 
 	signal: x,y listen
 	transformationen: signal -> signal
@@ -49,13 +32,46 @@ charlottes vorschlag:
 	plot_fft(...)
 	plot_signal_fft(...)
 
-Kalibrierung IMU:
-1. signal von imu so sauber wie möglich filtern (offset rausrechnen, kalibrieren etc.)?
-2. Wasserwaage für IMU bauen/offset herausfinden
-3. Wasserwaage Anzeige auf display programmieren
+- signal to noise ratio berechnen für mein csv signal
+- charakterisierung für signal (z.b. energie, irgendein maß, nicht amplitude) --> vergleich, wurzel der summe der quadrate von allen samples (mit/ohne lp vergleich)
+- mal versuchen: referenzsystem ändern - schwerkraft rausrechnen z.b. mit bandpass 
+- analyse: frequency response von meinem filter (faktoren mit denen einzelne frequenzen verstärkt/abgeschwächt wurden durch einsatz filter --> plotten)
+- saubere backup-aufnahmen machen (arena): stehen/losfahren/stehen, nur stehen (drift), drehen (360/180/90)
 
-Sonstiges:
-- mit repo von ivan dashboard ausprobieren: funktioniert das auf windows? brauche ich open gl?
+
+
+
+
+
+
+## Theorieteil, den ich schon recherchieren/schreiben kann 
+## (?) - noch nicht sicher, ob für MA relevant
+- filter-vergleich: madgwick/mahony/kalman
+- diskrete fourier-transformation
+(?) types of noise einordnen, zusammenhang mit fft und nutzung lowpass
+- güte eines lp berechnen:
+	> cutoff-point bestimmen --> fourier-transformation anschauen und dann entscheiden welche frequenzen abgeschnitten werden sollen (alles überhalb x) bzw. welche frequenzen für uns wertvoll sind
+	> passband attenuation: wie stark (in db) werden frequenzen im erwünschten bereich vom lp fälschlicherweise gedämpft (je niedriger desto besser)
+	> stopband attenuation: wie stark (in db) werden frequenzen im erwünschten bereich vom lp gedämpft (je höher desto besser)
+	> transition bandwidth: übergangsbreite zwischen gesperrtem und erwünschtem frequenzbereich (je kleiner/steiler desto besser)
+	> durch den einsatz des lp sollte keine phasenverschiebung und kein zusätzliches rauschen im signal entstehen
+
+## Theorierecherche:
+1. video tobias
+2. was sind lineare (signal-)filter/finite impulse response?
+3. quaternionen/gesamtrotation/irreale zahlen
+
+## Sonstiges/Nice to have:
+- kann mit python schreiben, muss aber später in c++ funktionieren mit libs, die arduino-kompatibel sind (liste angeblich auf platformIO)
+- experiment in der zukunft auf das ich hinarbeite: strecke in der arena zurücklegen, messen, vergleiche mit gemessener strecke auf IMU (das gleiche für drehung)
+- sliding window für integration: praktisch, einen datenpunkt "aus der zukunft" zu haben, wenn man integriert, weil es dann entspannter wird, was auch immer das bedeutet
+
+
+### ON HOLD
+-----------------------------------------------------------------
+- möglichkeiten für gute visualisierung zum vergleich unterschiedlicher varianten (lowpass, kein lowpass, lowpass hardware, etc.), schön, aber momentan nicht am wichtigsten
+
+
 
 
 
@@ -123,3 +139,12 @@ IMU auslesen
 	--> C++ implementierung im original-paper
 - kontinuierliches aufnehmen für längere zeit --> geht jetzt für accel-live-daten, bisher ohne speicherung
 - optimal: IMU benötigt nur zeit bis zum nächsten buffer, um rechenoperationen zu machen (z.b. rauschen rausrechnen) --> muss auf dem bot laufen
+- woran erkenne ich gute einstellungen für den lp-filter? cutoff, order?
+- gyro-daten in rad/s? nötig für madgwick! -- yes
+- wenn mit gemessenen datensamples gearbeitet wird ist die versuchung groß, das gesamte array zur berechnung zu verwenden. das geht bei live-messungen aber nicht, weil wir nicht gleichzeitig alle datenpunkte vorliegen haben. 
+- in windows link-sammlung: https://ahrs.readthedocs.io/en/latest/filters/madgwick.html
+- Kalibrierung IMU:
+	1. signal von imu so sauber wie möglich filtern (offset rausrechnen, kalibrieren etc.)?
+	2. Wasserwaage für IMU bauen/offset herausfinden
+	3. Wasserwaage Anzeige auf display programmieren
+- mit repo von ivan dashboard ausprobieren: funktioniert das auf windows? brauche ich open gl?

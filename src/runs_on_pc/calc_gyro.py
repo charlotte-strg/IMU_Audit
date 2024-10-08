@@ -41,6 +41,19 @@ gyro_df['gyro_x'] = aua.butter_lowpass_filter(gyro_df['gyro_x'], cutoff, fs, ord
 gyro_df['gyro_y'] = aua.butter_lowpass_filter(gyro_df['gyro_y'], cutoff, fs, order=5)
 gyro_df['gyro_z'] = aua.butter_lowpass_filter(gyro_df['gyro_z'], cutoff, fs, order=5)
 
+#################################### MADGWICK FILTER ####################################
+# from ahrs.filters import Madgwick
+# madgwick = Madgwick(gyr=gyro_data, acc=acc_data)     # Using IMU
+# type(madgwick.Q), madgwick.Q.shape
+
+# ODER
+
+# If we desire to estimate each sample independently, we call the corresponding update method.
+# madgwick = Madgwick()
+# Q = np.tile([1., 0., 0., 0.], (num_samples, 1)) # Allocate for quaternions
+# for t in range(1, num_samples):
+#     Q[t] = madgwick.updateIMU(Q[t-1], gyr=gyro_data[t], acc=acc_data[t])
+
 
 # Initialisiere Rotationslisten für x, y und z
 rotation_x = [0]  # Anfangswinkel für X
