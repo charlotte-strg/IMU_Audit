@@ -4,20 +4,10 @@
 
 ### AKTUELL
 -----------------------------------------------------------------
-- **theorieteil in overleaf aufsetzen**
-
-- **orientierung im raum algo von madgwick verstehen**
-- **madgwick python fertigschreiben**
-
-- **low pass hardware aktivieren und testen, LPF2 (siehe IMU-handbuch)**
-- **vergleich lp hardware und lp programmiert (signal to noise ratio in db)**
-
-- **rauschen rausrechnen (läuft auf bot)**
-- **distanz-berechnungen laufen auf bot (fertig für accel, gyro/rotation noch einarbeiten, sobald berechnung mit madgwick klar ist)**
-
+- **masterfunktion schreiben**
 - masterfunktion erstellen, die auf bot läuft mit folgenden optionalen parametern:
 	accel/gyro/weg/rotation daten über wifi live senden?
-	lowpass berechnen? hard/soft lp? mit welchem cutoff?
+	berechnung lowpass? hard/soft lp? mit welchem cutoff?
 	berechnung fourier transformation?
 	berechnung weg/rotation?
 	berechnung madgwick/mahony/kalman?
@@ -31,7 +21,17 @@ charlottes vorschlag:
 	plot_signal(signal, [lp-hard, lp, normal], params)
 	plot_fft(...)
 	plot_signal_fft(...)
+- **madgwick python fertigschreiben**
 
+- **overleaf MA dokument reinigen**
+- **theorieteil in overleaf aufsetzen**
+
+- low pass hardware aktivieren und testen, LPF2 (siehe IMU-handbuch)
+- vergleich lp hardware und lp programmiert (signal to noise ratio in db)
+
+- **masterfunktion läuft in C auf bot (rauschen rausrechnen, distanz-berechnungen (fertig für accel, gyro/rotation noch einarbeiten, sobald berechnung mit madgwick klar ist))**
+
+nice to have:
 - signal to noise ratio berechnen für mein csv signal
 - charakterisierung für signal (z.b. energie, irgendein maß, nicht amplitude) --> vergleich, wurzel der summe der quadrate von allen samples (mit/ohne lp vergleich)
 - mal versuchen: referenzsystem ändern - schwerkraft rausrechnen z.b. mit bandpass 
