@@ -36,7 +36,6 @@ cutoff = 50  # cutoff frequency in Hz
 # TODO: Problem: Frequenz, die hier genutzt wird,
 # ist eine andere als für FFT (accel_freq) --> anpassen!
 fs = 1/time_diff.mean()  # sampling frequency in Hz
-# macht es sinn, hier für x, y und z die gleichen frequenzen zu filtern?
 gyro_df['gyro_x'] = aua.butter_lowpass_filter(gyro_df['gyro_x'], cutoff, fs, order=5)
 gyro_df['gyro_y'] = aua.butter_lowpass_filter(gyro_df['gyro_y'], cutoff, fs, order=5)
 gyro_df['gyro_z'] = aua.butter_lowpass_filter(gyro_df['gyro_z'], cutoff, fs, order=5)
