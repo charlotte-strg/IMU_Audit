@@ -4,40 +4,20 @@
 
 ### AKTUELL
 -----------------------------------------------------------------
-- **masterfunktion schreiben**
-- masterfunktion erstellen, die auf bot läuft mit folgenden optionalen parametern:
-	accel/gyro/weg/rotation daten über wifi live senden?
-	berechnung lowpass? hard/soft lp? mit welchem cutoff?
-	berechnung fourier transformation?
-	berechnung weg/rotation?
-	berechnung madgwick/mahony/kalman?
-	visualisierung gewünscht? wovon?
-- masterfunktion:
-max vorschlag: 
-	signal: x,y listen
-	transformationen: signal -> signal
-	plot_signal: signal -> plot
-charlottes vorschlag:
-	plot_signal(signal, [lp-hard, lp, normal], params)
-	plot_fft(...)
-	plot_signal_fft(...)
+- **masterfunktion zum testen schreiben in python**
 - **madgwick python fertigschreiben**
+- **low pass hardware aktivieren und testen, LPF2 (siehe IMU-handbuch), vergleich  mit signal to noise ratio in db**
+- masterfunktion zum testen benutzen: saubere test-aufnahmen machen (arena): stehen/losfahren/stehen, nur stehen (drift), drehen (360/180/90), kurve fahren und strecke vergleichen (ist strecke_accel == madgwick(strecke_accel, rotation_gyro)?)
 
-- **overleaf MA dokument reinigen**
-- **theorieteil in overleaf aufsetzen**
+- masterfunktion erstellen, die auf bot läuft (algorithmus vorher fertig optimiert, parameter müssen vorher selektiert werden --> entscheiden welcher lowpass, entscheiden welcher sensor-fusion-filter, etc.), rauschen rausrechnen, distanz-berechnungen (fertig für accel, gyro/rotation noch einarbeiten, sobald berechnung mit madgwick klar ist)
 
-- low pass hardware aktivieren und testen, LPF2 (siehe IMU-handbuch)
-- vergleich lp hardware und lp programmiert (signal to noise ratio in db)
-
-- **masterfunktion läuft in C auf bot (rauschen rausrechnen, distanz-berechnungen (fertig für accel, gyro/rotation noch einarbeiten, sobald berechnung mit madgwick klar ist))**
+- **gliederung in overleaf aufsetzen**
 
 nice to have:
 - signal to noise ratio berechnen für mein csv signal
 - charakterisierung für signal (z.b. energie, irgendein maß, nicht amplitude) --> vergleich, wurzel der summe der quadrate von allen samples (mit/ohne lp vergleich)
 - mal versuchen: referenzsystem ändern - schwerkraft rausrechnen z.b. mit bandpass 
 - analyse: frequency response von meinem filter (faktoren mit denen einzelne frequenzen verstärkt/abgeschwächt wurden durch einsatz filter --> plotten)
-- saubere backup-aufnahmen machen (arena): stehen/losfahren/stehen, nur stehen (drift), drehen (360/180/90)
-
 
 
 
@@ -49,12 +29,6 @@ nice to have:
 - filter-vergleich: madgwick/mahony/kalman
 - diskrete fourier-transformation
 (?) types of noise einordnen, zusammenhang mit fft und nutzung lowpass
-- güte eines lp berechnen:
-	> cutoff-point bestimmen --> fourier-transformation anschauen und dann entscheiden welche frequenzen abgeschnitten werden sollen (alles überhalb x) bzw. welche frequenzen für uns wertvoll sind
-	> passband attenuation: wie stark (in db) werden frequenzen im erwünschten bereich vom lp fälschlicherweise gedämpft (je niedriger desto besser)
-	> stopband attenuation: wie stark (in db) werden frequenzen im erwünschten bereich vom lp gedämpft (je höher desto besser)
-	> transition bandwidth: übergangsbreite zwischen gesperrtem und erwünschtem frequenzbereich (je kleiner/steiler desto besser)
-	> durch den einsatz des lp sollte keine phasenverschiebung und kein zusätzliches rauschen im signal entstehen
 
 ## Theorierecherche:
 1. video tobias
@@ -148,3 +122,13 @@ IMU auslesen
 	2. Wasserwaage für IMU bauen/offset herausfinden
 	3. Wasserwaage Anzeige auf display programmieren
 - mit repo von ivan dashboard ausprobieren: funktioniert das auf windows? brauche ich open gl?
+- masterfunktion:
+max vorschlag: 
+	signal: x,y listen
+	transformationen: signal -> signal
+	plot_signal: signal -> plot
+charlottes vorschlag:
+	plot_signal(signal, [lp-hard, lp, normal], params)
+	plot_fft(...)
+	plot_signal_fft(...)
+- overleaf MA dokument reinigen
