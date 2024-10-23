@@ -1,6 +1,10 @@
 import numpy as np
 import pandas as pd
 from scipy.signal import butter, lfilter, freqz
+import socket
+import struct
+import csv
+import time
 
 
 def get_fourier(df_value_column: pd.Series, df_time_column: pd.Series, time_unit: str="micros") -> "tuple[np.ndarray, np.ndarray]":
@@ -66,17 +70,51 @@ def butter_lowpass_filter(data, cutoff, fs, order=5):
 
     return y
 
+
+def receive_data(rec_time_sek: float) -> pd.DataFrame:
+    '''
+    abwandlung von receive_data_to_csv.py
+    änderung: aufnahmezeit in sekunden statt anzahl an schritten
+    '''
+    
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.bind(('10.0.2.11', 4444))
+
+    BUFFER_SIZE = 1024
+    
+    df_sensor_data = pd.DataFrame(columns=['time_micros', 'accel_x', 'accel_y', 'accel_z', 'gyro_x', 'gyro_y', 'gyro_z'])
+    i=0
+    start_time = time.time()
+    while True:
+        i += 1
+
+        data, addr = sock.recvfrom(BUFFER_SIZE)
+        time, ax,ay,az,gx,gy,gz = struct.unpack('<Qffffff', data)
+        df_sensor_data = df_sensor_data.append({'time_micros': time, 'accel_x': ax, 'accel_y': ay, 'accel_z': az, 'gyro_x': gx, 'gyro_y': gy, 'gyro_z': gz}, ignore_index=True)
+
+        delta_time = time - start_time
+        if delta_time > rec_time_sek:
+            # check if i ist ein vielfaches von BUFFER_SIZE
+            if i % BUFFER_SIZE == 0:
+                break
+
+    return df_sensor_data
+
+
 # testszenarien
 #     kommen daten über wifi an?
 #     low pass gegen hardware lowpass testen (C++)
 #     berechnung weg/rotation für vergleich mit wahrheitswerten aus arena
 #     madgwick/mahony/kalman vergleich performance/genauigkeit 
 
-def master(params):
+def master(
+        parameter_sets: list[TestCalcParams]  # type: ignore
+    ):
     # daten sammeln
     # accel/gyro daten über wifi? live senden oder speichern?
+    df_sensor_data = receive_data(10)
 
-    # for param in params:
+    # for parameter_set in parameter_sets:
         # berechnungen
         # berechnung lowpass? hard/soft lp? mit welchem cutoff?
         # berechnung fourier transformation?
@@ -85,7 +123,17 @@ def master(params):
     
     # visualisierung
     # visualisierung gewünscht? wovon?
+
+    # speichern der ...
+        # sensordaten
+        # params
+        # visualisierung
+
+    # ausgabe einer empfehlung
+        # eingabe
+        # bestes parameterset
     pass
+
 
 # enum mit werten: madgwick, mahony, kalman, undefined
 class SensorFusionAlgo:
@@ -99,7 +147,8 @@ class SensorFusionAlgo:
 # start, stop, step sind floats
 # start < stop
 # step > 0 (größe der schritte)
-class Range:
+# deshalb neu definiert, weil range nur für ints funktioniert
+class FloatRange:
     def __init__(self, start: float, stop: float, step: float):
         self.start = start
         self.stop = stop
@@ -112,6 +161,11 @@ class Range:
             yield current
             current += self.step
 
+    def __str__(self):
+        return f"FloatRange({self.start}, {self.stop}, {self.step})"
+    def __repr__(self):
+        return str(self)
+
 # TODO: testen
 class TestCalcParams:
     def __init__(
@@ -123,66 +177,77 @@ class TestCalcParams:
             order_gyro: int,
             sensor_fusion_algo: SensorFusionAlgo
             ):
-        if not isinstance(sample_len_sec, (int, float)):
-            raise ValueError("sample_len_sec must be an int or a float.")
         self.sample_len_sec = sample_len_sec
-
-        if isinstance(cutoff_accel, (int, float)):
-            # falls cutoff_accel ein float oder int ist, Range objekt mit einem wert erzeugen, um permutation zu vereinfachen
-            self.cutoff_accel = Range(cutoff_accel, cutoff_accel, 1)
-        elif isinstance(cutoff_accel, Range):
-            self.cutoff_accel = cutoff_accel
-        else:
-            raise ValueError("cutoff_accel must be a float or a Range object.")
-        
-        if isinstance(cutoff_gyro, (int, float)):
-            # falls cutoff_gyro ein float oder int ist, Range objekt mit einem wert erzeugen, um permutation zu vereinfachen
-            self.cutoff_gyro = Range(cutoff_gyro, cutoff_gyro, 1)
-        elif isinstance(cutoff_gyro, Range):
-            self.cutoff_gyro = cutoff_gyro
-        else:
-            raise ValueError("cutoff_gyro must be a float or a Range object.")
-        
-        if isinstance(order_accel, (int, float)):
-            # falls order_accel ein float oder int ist, Range objekt mit einem wert erzeugen, um permutation zu vereinfachen
-            self.order_accel = Range(order_accel, order_accel, 1)
-        elif isinstance(order_accel, Range):
-            self.order_accel = order_accel
-        else:
-            raise ValueError("order_accel must be a float or a Range object.")
-        
-        if isinstance(order_gyro, (int, float)):
-            # falls order_gyro ein float oder int ist, Range objekt mit einem wert erzeugen, um permutation zu vereinfachen
-            self.order_gyro = Range(order_gyro, order_gyro, 1)
-        elif isinstance(order_gyro, Range):
-            self.order_gyro = order_gyro
-        else:
-            raise ValueError("order_gyro must be a float or a Range object.")
-        
-        if not isinstance(sensor_fusion_algo, SensorFusionAlgo):
-            raise ValueError("sensor_fusion_algo must be a SensorFusionAlgo object.")
+        self.cutoff_accel = cutoff_accel
+        self.cutoff_gyro = cutoff_gyro
+        self.order_accel = order_accel
+        self.order_gyro = order_gyro
         self.sensor_fusion_algo = sensor_fusion_algo
+        # if not isinstance(sample_len_sec, (int, float)):
+        #     raise ValueError("sample_len_sec must be an int or a float.")
+        # self.sample_len_sec = sample_len_sec
 
-    # will aus meiner TestCalcParams mit zu optimierenden, 
-    # undefinierten werten eine reihe an TestCalcParams erzeugen, 
-    # für die jedes attribut definiert ist.
-    # 
-    # iterator, welcher parameter sets zurück gibt. 
-    # falls einer der parameter SensorFusionAlgo.UNDEFINED ist, oder ein Range Objekt ist, 
-    # sollen mehrere parameter sets erzeugt werden, die über diesen parameter permutieren
-    # 
-    # falls ein parameter ein Range Objekt ist, sollen die parameter sets so erzeugt werden, dass alle möglichen kombinationen der parameterwerte aus den Range Objekten erzeugt werden
-    # falls ein parameter SensorFusionAlgo.UNDEFINED ist, sollen alle möglichen SensorFusionAlgo werte durchprobiert werden
-    # falls ein parameter ein float ist, soll dieser wert für alle parameter sets gleich sein
-    # falls ein parameter ein int ist, soll dieser wert für alle parameter sets gleich sein
-    def __iter__(self):
-        for cutoff_accel in self.cutoff_accel:
-            for cutoff_gyro in self.cutoff_gyro:
-                for order_accel in self.order_accel:
-                    for order_gyro in self.order_gyro:
-                        if self.sensor_fusion_algo == SensorFusionAlgo.UNDEFINED:
-                            for sensor_fusion_algo in [SensorFusionAlgo.MADGWICK, SensorFusionAlgo.MAHONY, SensorFusionAlgo.KALMAN]:
-                                yield TestCalcParams(self.sample_len_sec, cutoff_accel, cutoff_gyro, order_accel, order_gyro, sensor_fusion_algo)
-                        else:
-                            # frage: ist self.sensor_fusion_algo hier nicht UNDEFINED?
-                            yield TestCalcParams(self.sample_len_sec, cutoff_accel, cutoff_gyro, order_accel, order_gyro, self.sensor_fusion_algo)
+        # if isinstance(cutoff_accel, (int, float)):
+        #     # falls cutoff_accel ein float oder int ist, Range objekt mit einem wert erzeugen, um permutation zu vereinfachen
+        #     self.cutoff_accel = FloatRange(cutoff_accel, cutoff_accel, 1)
+        # elif isinstance(cutoff_accel, FloatRange):
+        #     self.cutoff_accel = cutoff_accel
+        # else:
+        #     raise ValueError("cutoff_accel must be a float or a FloatRange object.")
+        
+        # if isinstance(cutoff_gyro, (int, float)):
+        #     # falls cutoff_gyro ein float oder int ist, FloatRange objekt mit einem wert erzeugen, um permutation zu vereinfachen
+        #     self.cutoff_gyro = FloatRange(cutoff_gyro, cutoff_gyro, 1)
+        # elif isinstance(cutoff_gyro, FloatRange):
+        #     self.cutoff_gyro = cutoff_gyro
+        # else:
+        #     raise ValueError("cutoff_gyro must be a float or a FloatRange object.")
+        
+        # if isinstance(order_accel, (int, float)):
+        #     # falls order_accel ein float oder int ist, FloatRange objekt mit einem wert erzeugen, um permutation zu vereinfachen
+        #     self.order_accel = FloatRange(order_accel, order_accel, 1)
+        # elif isinstance(order_accel, FloatRange):
+        #     self.order_accel = order_accel
+        # else:
+        #     raise ValueError("order_accel must be a float or a FloatRange object.")
+        
+        # if isinstance(order_gyro, (int, float)):
+        #     # falls order_gyro ein float oder int ist, FloatRange objekt mit einem wert erzeugen, um permutation zu vereinfachen
+        #     self.order_gyro = FloatRange(order_gyro, order_gyro, 1)
+        # elif isinstance(order_gyro, FloatRange):
+        #     self.order_gyro = order_gyro
+        # else:
+        #     raise ValueError("order_gyro must be a float or a FloatRange object.")
+        
+        # self.sensor_fusion_algo = sensor_fusion_algo
+
+    # # will aus meiner TestCalcParams mit zu optimierenden, 
+    # # undefinierten werten eine reihe an TestCalcParams erzeugen, 
+    # # für die jedes attribut definiert ist.
+    # # 
+    # # iterator, welcher parameter sets zurück gibt. 
+    # # falls einer der parameter SensorFusionAlgo.UNDEFINED ist, oder ein Range Objekt ist, 
+    # # sollen mehrere parameter sets erzeugt werden, die über diesen parameter permutieren
+    # # 
+    # # falls ein parameter ein Range Objekt ist, sollen die parameter sets so erzeugt werden, dass alle möglichen kombinationen der parameterwerte aus den Range Objekten erzeugt werden
+    # # falls ein parameter SensorFusionAlgo.UNDEFINED ist, sollen alle möglichen SensorFusionAlgo werte durchprobiert werden
+    # # falls ein parameter ein float ist, soll dieser wert für alle parameter sets gleich sein
+    # # falls ein parameter ein int ist, soll dieser wert für alle parameter sets gleich sein
+    # def __iter__(self):
+    #     for cutoff_accel in self.cutoff_accel:
+    #         for cutoff_gyro in self.cutoff_gyro:
+    #             for order_accel in self.order_accel:
+    #                 for order_gyro in self.order_gyro:
+    #                     if self.sensor_fusion_algo == SensorFusionAlgo.UNDEFINED:
+    #                         for sensor_fusion_algo in [SensorFusionAlgo.MADGWICK, SensorFusionAlgo.MAHONY, SensorFusionAlgo.KALMAN]:
+    #                             yield TestCalcParams(self.sample_len_sec, cutoff_accel, cutoff_gyro, order_accel, order_gyro, sensor_fusion_algo)
+    #                     else:
+    #                         # frage: ist self.sensor_fusion_algo hier nicht UNDEFINED?
+    #                         yield TestCalcParams(self.sample_len_sec, cutoff_accel, cutoff_gyro, order_accel, order_gyro, self.sensor_fusion_algo)
+
+    # gibt eine string repräsentation des objekts zurück
+    def __str__(self):
+        return f"TestCalcParams(sample_len_sec={self.sample_len_sec}, cutoff_accel={self.cutoff_accel}, cutoff_gyro={self.cutoff_gyro}, order_accel={self.order_accel}, order_gyro={self.order_gyro}, sensor_fusion_algo={self.sensor_fusion_algo})"
+    # gibt eine string repräsentation des objekts zurück
+    def __repr__(self):
+        return str(self)
