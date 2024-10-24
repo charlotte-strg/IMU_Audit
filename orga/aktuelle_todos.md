@@ -5,13 +5,14 @@
 ### AKTUELL
 -----------------------------------------------------------------
 - **masterfunktion zum testen schreiben in python**
+
 - **madgwick python fertigschreiben**
 - **low pass hardware aktivieren und testen, LPF2 (siehe IMU-handbuch), vergleich  mit signal to noise ratio in db**
 - masterfunktion zum testen benutzen: saubere test-aufnahmen machen (arena): stehen/losfahren/stehen, nur stehen (drift), drehen (360/180/90), kurve fahren und strecke vergleichen (ist strecke_accel == madgwick(strecke_accel, rotation_gyro)?)
 
 - masterfunktion erstellen, die auf bot läuft (algorithmus vorher fertig optimiert, parameter müssen vorher selektiert werden --> entscheiden welcher lowpass, entscheiden welcher sensor-fusion-filter, etc.), rauschen rausrechnen, distanz-berechnungen (fertig für accel, gyro/rotation noch einarbeiten, sobald berechnung mit madgwick klar ist)
 
-- **gliederung in overleaf aufsetzen**
+- **Grundlagen/Einführung in IMU Recherche**
 
 nice to have:
 - signal to noise ratio berechnen für mein csv signal
@@ -132,3 +133,4 @@ charlottes vorschlag:
 	plot_fft(...)
 	plot_signal_fft(...)
 - overleaf MA dokument reinigen
+- gliederung in overleaf aufsetzen
