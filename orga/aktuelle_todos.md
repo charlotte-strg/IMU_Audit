@@ -1,40 +1,30 @@
 ### FRAGEN FÜR KONSULTATION
 ----------------------------------------------------------------- 
-1. brauche bot, der fährt.
+- brauche bot, der fährt
 
 ### AKTUELL
 -----------------------------------------------------------------
-- **masterfunktion zum testen schreiben in python**
-
 - **madgwick python fertigschreiben**
-- **low pass hardware aktivieren und testen, LPF2 (siehe IMU-handbuch), vergleich  mit signal to noise ratio in db**
-- masterfunktion zum testen benutzen: saubere test-aufnahmen machen (arena): stehen/losfahren/stehen, nur stehen (drift), drehen (360/180/90), kurve fahren und strecke vergleichen (ist strecke_accel == madgwick(strecke_accel, rotation_gyro)?)
-
-- masterfunktion erstellen, die auf bot läuft (algorithmus vorher fertig optimiert, parameter müssen vorher selektiert werden --> entscheiden welcher lowpass, entscheiden welcher sensor-fusion-filter, etc.), rauschen rausrechnen, distanz-berechnungen (fertig für accel, gyro/rotation noch einarbeiten, sobald berechnung mit madgwick klar ist)
-
-- **Grundlagen/Einführung in IMU Recherche**
+- saubere test-aufnahmen machen (arena): 
+stehen/losfahren/90° drehung/weiterfahren/stehen, nur stehen (drift), drehen (360/180/90), kurve fahren und strecke vergleichen (ist strecke_accel == madgwick(strecke_accel, rotation_gyro)?)
 
 nice to have:
 - signal to noise ratio berechnen für mein csv signal
 - charakterisierung für signal (z.b. energie, irgendein maß, nicht amplitude) --> vergleich, wurzel der summe der quadrate von allen samples (mit/ohne lp vergleich)
 - mal versuchen: referenzsystem ändern - schwerkraft rausrechnen z.b. mit bandpass 
 - analyse: frequency response von meinem filter (faktoren mit denen einzelne frequenzen verstärkt/abgeschwächt wurden durch einsatz filter --> plotten)
-
-
-
-
+- low pass hardware aktivieren und testen, LPF2 (siehe IMU-handbuch), vergleich  mit signal to noise ratio in db
 
 
 ## Theorieteil, den ich schon recherchieren/schreiben kann 
 ## (?) - noch nicht sicher, ob für MA relevant
-- filter-vergleich: madgwick/mahony/kalman
 - diskrete fourier-transformation
-(?) types of noise einordnen, zusammenhang mit fft und nutzung lowpass
+- types of noise einordnen, zusammenhang mit fft 
+- bandpassfilter und alternativen
 
 ## Theorierecherche:
-1. video tobias
-2. was sind lineare (signal-)filter/finite impulse response?
-3. quaternionen/gesamtrotation/irreale zahlen
+- was sind lineare (signal-)filter/finite impulse response?
+- quaternionen/gesamtrotation/irreale zahlen
 
 ## Sonstiges/Nice to have:
 - kann mit python schreiben, muss aber später in c++ funktionieren mit libs, die arduino-kompatibel sind (liste angeblich auf platformIO)
@@ -134,3 +124,8 @@ charlottes vorschlag:
 	plot_signal_fft(...)
 - overleaf MA dokument reinigen
 - gliederung in overleaf aufsetzen
+- Grundlagen/Einführung in IMU Recherche
+- masterfunktion zum testen schreiben in python
+- masterfunktion erstellen, die auf bot läuft (algorithmus vorher fertig optimiert, parameter müssen vorher selektiert werden --> entscheiden welcher lowpass, entscheiden welcher sensor-fusion-filter, etc.), rauschen rausrechnen, distanz-berechnungen (fertig für accel, gyro/rotation noch einarbeiten, sobald berechnung mit madgwick klar ist)
+- filter-vergleich: madgwick/mahony/kalman
+- video tobias
