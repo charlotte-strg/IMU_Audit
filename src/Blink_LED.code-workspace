@@ -6,5 +6,10 @@
         {
             "path": "../../murmecha-core"
         }
-    ]
+    ],
+    "settings": {
+        "files.associations": {
+            "functional": "cpp"
+        }
+    }
 }

@@ -1,20 +1,17 @@
-#ifndef FILTER_H
-#define FILTER_H
+#ifndef FILTER_HPP
+#define FILTER_HPP
 
-// Math library required for sqrt
-#include <math.h>
+#include <cmath>
+#include <array>
 
 // System constants
-#define deltat 0.001f // sampling period in seconds (shown as 1 ms)
-#define gyroMeasError 3.14159265358979f * (5.0f / 180.0f) // gyroscope measurement error in rad/s (shown as 5 deg/s)
-#define beta sqrt(3.0f / 4.0f) * gyroMeasError // compute beta
+constexpr float deltat = 0.001f;  // Sampling period in seconds (1 ms)
+constexpr float gyroMeasError = M_PI * (5.0f / 180.0f);  // Gyroscope measurement error in rad/s (5 deg/s)
+const float beta = std::sqrt(3.0f / 4.0f) * gyroMeasError;  // Compute beta
 
-// Global system variables (extern to be accessed by other files)
-extern float a_x, a_y, a_z; // accelerometer measurements
-extern float w_x, w_y, w_z; // gyroscope measurements in rad/s
-extern float SEq_1, SEq_2, SEq_3, SEq_4; // estimated orientation quaternion elements with initial conditions
+// Function to update the quaternion based on sensor data
+std::array<float, 4> filterUpdate(float SEq_1, float SEq_2, float SEq_3, float SEq_4, 
+                                  float w_x, float w_y, float w_z, 
+                                  float a_x, float a_y, float a_z);
 
-// Function prototype for filter update
-void filterUpdate(float w_x, float w_y, float w_z, float a_x, float a_y, float a_z);
-
-#endif // FILTER_H
+#endif // FILTER_HPP
