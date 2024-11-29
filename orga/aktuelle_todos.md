@@ -1,6 +1,8 @@
 ### FRAGEN FÜR KONSULTATION
 ----------------------------------------------------------------- 
-- brauche bot, der fährt
+- hat der bot zufällig falsch eingebaute räder?
+- ist davids code noch für einen anders aufgebauten bot? radumfang etc. stimmen nur teilweise
+- bot fährt kein quadrat und nicht mal ansatzweise rechte winkel. ist das normal?
 
 ### AKTUELL
 -----------------------------------------------------------------
