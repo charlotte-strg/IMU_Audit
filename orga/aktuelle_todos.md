@@ -1,11 +1,10 @@
 ### FRAGEN FÜR KONSULTATION
 ----------------------------------------------------------------- 
-- hat der bot zufällig falsch eingebaute räder?
 - ist davids code noch für einen anders aufgebauten bot? radumfang etc. stimmen nur teilweise
-- bot fährt kein quadrat und nicht mal ansatzweise rechte winkel. ist das normal?
 
 ### AKTUELL
 -----------------------------------------------------------------
+- mögliche implementierungen madgwick in square.cpp: stumpf (ist 90grad? falls ja weiter, falls nicht, zurück/vor drehen) oder pid controller (zielwinkel vorgeben)
 - **madgwick python fertigschreiben**
 - saubere test-aufnahmen machen (arena): 
 stehen/losfahren/90° drehung/weiterfahren/stehen, nur stehen (drift), drehen (360/180/90), kurve fahren und strecke vergleichen (ist strecke_accel == madgwick(strecke_accel, rotation_gyro)?)

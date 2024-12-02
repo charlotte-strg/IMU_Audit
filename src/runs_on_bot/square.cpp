@@ -25,6 +25,7 @@ void custom_setup_square() {
   murmecha::display::draw_tracking_code(16);
   murmecha::display::draw_info_screen(16);
   murmecha::display::update();
+  murmecha::motors::beep(1200,500);
 
   delay(2000);
   // pinMode(RIGHT_MOTOR_STEP, OUTPUT);
@@ -43,14 +44,14 @@ void drive_circle(float radius, float vm) {
   float v_r = 2 * vm / (1 + (R_l / R_r));
   float v_l = v_r * (R_l / R_r);
   //v_r habe ich umgedreht, weil rad falsch montiert
-  murmecha::motors::set_linear_velocities(v_l, -v_r);
+  murmecha::motors::set_linear_velocities(v_l, v_r);
 
 }
 
 void drive_segment(float length, float vm) {
 
   float time = length / vm;
-  motors::set_linear_velocities(vm, -vm);
+  motors::set_linear_velocities(vm, vm);
   delay(time*1000);
   motors::set_linear_velocities(0, 0);
 
