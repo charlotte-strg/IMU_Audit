@@ -1,6 +1,5 @@
 ### FRAGEN FÜR KONSULTATION
 ----------------------------------------------------------------- 
-- ist davids code noch für einen anders aufgebauten bot? radumfang etc. stimmen nur teilweise
 
 ### AKTUELL
 -----------------------------------------------------------------
@@ -10,6 +9,7 @@
 stehen/losfahren/90° drehung/weiterfahren/stehen, nur stehen (drift), drehen (360/180/90), kurve fahren und strecke vergleichen (ist strecke_accel == madgwick(strecke_accel, rotation_gyro)?)
 
 nice to have:
+- wenn bot auf dem kopf steht, UV-LED ausschalten und beep
 - signal to noise ratio berechnen für mein csv signal
 - charakterisierung für signal (z.b. energie, irgendein maß, nicht amplitude) --> vergleich, wurzel der summe der quadrate von allen samples (mit/ohne lp vergleich)
 - mal versuchen: referenzsystem ändern - schwerkraft rausrechnen z.b. mit bandpass 
@@ -29,7 +29,6 @@ nice to have:
 
 ## Sonstiges/Nice to have:
 - kann mit python schreiben, muss aber später in c++ funktionieren mit libs, die arduino-kompatibel sind (liste angeblich auf platformIO)
-- experiment in der zukunft auf das ich hinarbeite: strecke in der arena zurücklegen, messen, vergleiche mit gemessener strecke auf IMU (das gleiche für drehung)
 - sliding window für integration: praktisch, einen datenpunkt "aus der zukunft" zu haben, wenn man integriert, weil es dann entspannter wird, was auch immer das bedeutet
 
 
