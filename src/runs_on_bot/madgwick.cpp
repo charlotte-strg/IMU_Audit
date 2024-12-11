@@ -1,6 +1,7 @@
 // #include <iostream>
 #include <cmath>
 #include <array>
+#include "quaternions.h"
 
 
 // System constants
@@ -11,7 +12,7 @@ const float beta = std::sqrt(3.0f / 4.0f) * gyroMeasError; // Compute beta
 // Global system variables
 // float SEq_1 = 1.0f, SEq_2 = 0.0f, SEq_3 = 0.0f, SEq_4 = 0.0f; // Estimated orientation quaternion elements
 
-std::array<float, 4> filterUpdate(float SEq_1, float SEq_2, float SEq_3, float SEq_4, float w_x, float w_y, float w_z, float a_x, float a_y, float a_z) {
+Quaternion filterUpdate(const Quaternion& q, float w_x, float w_y, float w_z, float a_x, float a_y, float a_z) {
     // Local system variables
     float norm; // Vector norm
     float SEqDot_omega_1, SEqDot_omega_2, SEqDot_omega_3, SEqDot_omega_4; // Quaternion derivative from gyroscope elements
@@ -20,13 +21,13 @@ std::array<float, 4> filterUpdate(float SEq_1, float SEq_2, float SEq_3, float S
     float SEqHatDot_1, SEqHatDot_2, SEqHatDot_3, SEqHatDot_4;  // Estimated direction of gyroscope error
 
     // Auxiliary variables to avoid repeated calculations
-    const float halfSEq_1 = 0.5f * SEq_1;
-    const float halfSEq_2 = 0.5f * SEq_2;
-    const float halfSEq_3 = 0.5f * SEq_3;
-    const float halfSEq_4 = 0.5f * SEq_4;
-    const float twoSEq_1 = 2.0f * SEq_1;
-    const float twoSEq_2 = 2.0f * SEq_2;
-    const float twoSEq_3 = 2.0f * SEq_3;
+    const float halfSEq_1 = 0.5f * q.w;
+    const float halfSEq_2 = 0.5f * q.x;
+    const float halfSEq_3 = 0.5f * q.y;
+    const float halfSEq_4 = 0.5f * q.z;
+    const float twoSEq_1 = 2.0f * q.w;
+    const float twoSEq_2 = 2.0f * q.x;
+    const float twoSEq_3 = 2.0f * q.y;
 
     // Normalize the accelerometer measurement
     norm = std::sqrt(a_x * a_x + a_y * a_y + a_z * a_z);
@@ -35,11 +36,11 @@ std::array<float, 4> filterUpdate(float SEq_1, float SEq_2, float SEq_3, float S
     a_z /= norm;
 
     // Compute the objective function and Jacobian
-    f_1 = twoSEq_2 * SEq_4 - twoSEq_1 * SEq_3 - a_x;
-    f_2 = twoSEq_1 * SEq_2 + twoSEq_3 * SEq_4 - a_y;
+    f_1 = twoSEq_2 * q.z - twoSEq_1 * q.y - a_x;
+    f_2 = twoSEq_1 * q.x + twoSEq_3 * q.z - a_y;
     f_3 = 1.0f - twoSEq_2 * twoSEq_2 - twoSEq_3 * twoSEq_3 - a_z;
     J_11or24 = twoSEq_3;
-    J_12or23 = 2.0f * SEq_4;
+    J_12or23 = 2.0f * q.z;
     J_13or22 = twoSEq_1;
     J_14or21 = twoSEq_2;
     J_32 = 2.0f * J_14or21;
@@ -66,10 +67,10 @@ std::array<float, 4> filterUpdate(float SEq_1, float SEq_2, float SEq_3, float S
     SEqDot_omega_4 = halfSEq_1 * w_z + halfSEq_2 * w_y - halfSEq_3 * w_x;
 
     // Compute and integrate the estimated quaternion derivative
-    float SEq_1_new = SEq_1 + (SEqDot_omega_1 - (beta * SEqHatDot_1)) * deltat;
-    float SEq_2_new = SEq_2 + (SEqDot_omega_2 - (beta * SEqHatDot_2)) * deltat;
-    float SEq_3_new = SEq_3 + (SEqDot_omega_3 - (beta * SEqHatDot_3)) * deltat;
-    float SEq_4_new = SEq_4 + (SEqDot_omega_4 - (beta * SEqHatDot_4)) * deltat;
+    float SEq_1_new = q.w + (SEqDot_omega_1 - (beta * SEqHatDot_1)) * deltat;
+    float SEq_2_new = q.x + (SEqDot_omega_2 - (beta * SEqHatDot_2)) * deltat;
+    float SEq_3_new = q.y + (SEqDot_omega_3 - (beta * SEqHatDot_3)) * deltat;
+    float SEq_4_new = q.z + (SEqDot_omega_4 - (beta * SEqHatDot_4)) * deltat;
 
     // Normalize quaternion
     norm = std::sqrt(SEq_1_new * SEq_1_new + SEq_2_new * SEq_2_new + SEq_3_new * SEq_3_new + SEq_4_new * SEq_4_new);

@@ -10,8 +10,8 @@
 #include <pins.hpp>
 #include <driver/mcpwm.h>
 
-void custom_setup_square();
-void custom_loop_square();
+void custom_setup_square_madgwick();
+void custom_loop_square_madgwick();
 
 namespace murmecha {
 

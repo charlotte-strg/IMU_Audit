@@ -2,19 +2,16 @@
 #define IMU_MADGWICK_INTEGRATION_HPP
 
 #include <Arduino.h>
-#include <imu.hpp>  // Annahme: murmecha::imu wird verwendet
-#include "madgwick.h" // Madgwick-Funktion
+#include <imu.hpp>
+#include "madgwick.h"
 #include <robot.hpp>
 #include <array>
+#include "quaternions.h"
 
 // Globale Variablen für die Orientierung (Quaternionen)
-extern float SEq_1;
-extern float SEq_2;
-extern float SEq_3;
-extern float SEq_4;
+extern Quaternion orientation;
 
-// Funktionsdeklarationen
-// void setup();
-void custom_loop_m_int();
+void IRAM_ATTR timedUpdate();
+void reset_orientation();
 
-#endif // IMU_MADGWICK_INTEGRATION_HPP
+#endif

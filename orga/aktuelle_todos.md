@@ -4,7 +4,7 @@
 ### AKTUELL
 -----------------------------------------------------------------
 - mögliche implementierungen madgwick in square.cpp: stumpf (ist 90grad? falls ja weiter, falls nicht, zurück/vor drehen) oder pid controller (zielwinkel vorgeben)
-- **madgwick python fertigschreiben**
+- **madgwick fertigschreiben**
 - saubere test-aufnahmen machen (arena): 
 stehen/losfahren/90° drehung/weiterfahren/stehen, nur stehen (drift), drehen (360/180/90), kurve fahren und strecke vergleichen (ist strecke_accel == madgwick(strecke_accel, rotation_gyro)?)
 
