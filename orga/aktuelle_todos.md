@@ -3,10 +3,16 @@
 
 ### AKTUELL
 -----------------------------------------------------------------
-- mögliche implementierungen madgwick in square.cpp: stumpf (ist 90grad? falls ja weiter, falls nicht, zurück/vor drehen) oder pid controller (zielwinkel vorgeben)
-- **madgwick fertigschreiben**
+- arena-aufnahmen vorbereiten/daten sammeln für: 
+		fft
+		lowpass-filter
+		analyse fahrtweg gesamt (via doppel-integration accel)
+- pid controller (zielwinkel vorgeben) implementieren
 - saubere test-aufnahmen machen (arena): 
-stehen/losfahren/90° drehung/weiterfahren/stehen, nur stehen (drift), drehen (360/180/90), kurve fahren und strecke vergleichen (ist strecke_accel == madgwick(strecke_accel, rotation_gyro)?)
+		quadrat 
+		quadrat (runde ecken)
+		stehen/drift (10 s)
+		optional: beep/UV aus, wenn auf kopf gedreht
 
 nice to have:
 - wenn bot auf dem kopf steht, UV-LED ausschalten und beep
@@ -129,3 +135,6 @@ charlottes vorschlag:
 - masterfunktion erstellen, die auf bot läuft (algorithmus vorher fertig optimiert, parameter müssen vorher selektiert werden --> entscheiden welcher lowpass, entscheiden welcher sensor-fusion-filter, etc.), rauschen rausrechnen, distanz-berechnungen (fertig für accel, gyro/rotation noch einarbeiten, sobald berechnung mit madgwick klar ist)
 - filter-vergleich: madgwick/mahony/kalman
 - video tobias
+- mögliche implementierungen madgwick in square.cpp: stumpf (ist 90grad? falls ja weiter, falls nicht, zurück/vor drehen) oder
+- madgwick fertigschreiben
+- stehen/losfahren/90° drehung/weiterfahren/stehen, nur stehen (drift), drehen (360/180/90), kurve fahren und strecke vergleichen (ist strecke_accel == madgwick(strecke_accel, rotation_gyro)?)

@@ -8,7 +8,6 @@
 #include <array>
 #include "quaternions.h"
 
-// Globale Variablen für die Orientierung (Quaternionen)
 extern Quaternion orientation;
 
 void IRAM_ATTR timedUpdate();

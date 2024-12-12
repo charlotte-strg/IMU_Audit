@@ -4,11 +4,12 @@
 #include <robot.hpp>
 #include "quaternions.h"
 
-// Globale Variablen für die Orientierung (Quaternionen)
+// quaternionen global initialisiert mit 1, 0, 0, 0
 Quaternion orientation = Quaternion::identity();
 
-// IRAM_ATTR sorgt dafür, dass timedUpdate im schnellen arbeitsspeicher gehalten wird
+// aktualisiert orientierung des bots mit jedem neuen datenpunkt aus der IMU
 void IRAM_ATTR timedUpdate() {
+// attribut IRAM_ATTR --> timedUpdate im schnellen arbeitsspeicher
     murmecha::imu::read_accel_and_gyro();
     auto accel = murmecha::imu::get_acceleration();
     auto gyro = murmecha::imu::get_gyroscope();
@@ -20,6 +21,7 @@ void IRAM_ATTR timedUpdate() {
     );
 }
 
+// quaternionen zurücksetzen
 void reset_orientation() {
     orientation = Quaternion::identity();
 }

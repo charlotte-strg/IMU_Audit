@@ -54,6 +54,7 @@ void drive_segment(float length, float vm) {
   motors::set_linear_velocities(0, 0);
 }
 
+// kurve fahren mit madgwick, muss noch in namen eingebaut werden
 void drive_curve(float radius, float angle, float vm) {
     // float dist = radius * angle;
     // float time = dist / vm;
@@ -65,8 +66,6 @@ void drive_curve(float radius, float angle, float vm) {
     drive_circle(radius, vm);
 
     // delay(time * 1000);
-    // delay ersetzen durch schleife
-    // in schleife konstant orientierung überprüfen, bis 90 grad drehung erreicht ist
     while(current_angle < angle) {
       timedUpdate();
       current_angle = calculateRotationAngle(q_initial, orientation);
@@ -85,5 +84,6 @@ void custom_loop_square_madgwick() {
   murmecha::display::draw_tracking_code(16);
   murmecha::display::update();
 
+  // ist dieser print notwendig?
   Serial.println(vel);
 }

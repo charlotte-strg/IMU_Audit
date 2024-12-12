@@ -9,9 +9,6 @@ constexpr float deltat = 0.001f; // Sampling period in seconds (1 ms)
 constexpr float gyroMeasError = M_PI * (5.0f / 180.0f); // Gyroscope measurement error in rad/s (5 deg/s)
 const float beta = std::sqrt(3.0f / 4.0f) * gyroMeasError; // Compute beta
 
-// Global system variables
-// float SEq_1 = 1.0f, SEq_2 = 0.0f, SEq_3 = 0.0f, SEq_4 = 0.0f; // Estimated orientation quaternion elements
-
 Quaternion filterUpdate(const Quaternion& q, float w_x, float w_y, float w_z, float a_x, float a_y, float a_z) {
     // Local system variables
     float norm; // Vector norm
