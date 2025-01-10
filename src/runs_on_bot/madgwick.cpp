@@ -5,9 +5,12 @@
 
 
 // System constants
-constexpr float deltat = 0.001f; // Sampling period in seconds (1 ms)
+constexpr float deltat = 0.002f; // realistischere samplingzeit von 2ms
+//constexpr float deltat = 0.001f; // Sampling period in seconds (1 ms)
 constexpr float gyroMeasError = M_PI * (5.0f / 180.0f); // Gyroscope measurement error in rad/s (5 deg/s)
-const float beta = std::sqrt(3.0f / 4.0f) * gyroMeasError; // Compute beta
+//const float beta = std::sqrt(3.0f / 4.0f) * gyroMeasError; // Compute beta
+const float beta = 0.42f; // beta, das david und ich festgelegt haben aufgrund von mean winkelgeschwindigkeit aus 1000 samples
+
 
 Quaternion filterUpdate(const Quaternion& q, float w_x, float w_y, float w_z, float a_x, float a_y, float a_z) {
     // Local system variables

@@ -24,20 +24,6 @@ accel_df['accel_x'] = aua.butter_lowpass_filter(accel_df['accel_x'], cutoff, fs,
 accel_df['accel_y'] = aua.butter_lowpass_filter(accel_df['accel_y'], cutoff, fs, order=5)
 accel_df['accel_z'] = aua.butter_lowpass_filter(accel_df['accel_z'], cutoff, fs, order=5)
 
-#################################### MADGWICK FILTER ####################################
-# from ahrs.filters import Madgwick
-# madgwick = Madgwick(gyr=gyro_data, acc=acc_data)     # Using IMU
-# type(madgwick.Q), madgwick.Q.shape
-
-# ODER
-
-# If we desire to estimate each sample independently, we call the corresponding update method.
-# madgwick = Madgwick()
-# Q = np.tile([1., 0., 0., 0.], (num_samples, 1)) # Allocate for quaternions
-# for t in range(1, num_samples):
-#     Q[t] = madgwick.updateIMU(Q[t-1], gyr=gyro_data[t], acc=acc_data[t])
-
-
 # Initialisiere Geschwindigkeits- und Distanzlisten für x, y und z
 velocity_x = [0]
 distance_x = [0]

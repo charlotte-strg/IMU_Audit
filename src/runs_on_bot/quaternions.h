@@ -3,7 +3,7 @@
 
 #include <cmath>
 
-// warum ist das sowohl hier drin als auch in quaternion.cpp?
+// warum ist das sowohl hier drin als auch in
 struct Quaternion {
     double w, x, y, z;
 

@@ -51,10 +51,11 @@ void custom_setup() {
     //IP-Adresse (6 für bot mit nummer 6), Gateway, an wen senden (zuhause)
     // WiFi.config(IPAddress(10, 0, 1, 6), IPAddress(10, 0, 2, 1), IPAddress(255, 255, 0, 0));
     // WiFi.config(IPAddress(10, 0, 1, 13), IPAddress(10, 0, 2, 1), IPAddress(255, 255, 0, 0));
+    WiFi.config(IPAddress(10, 0, 1, 22), IPAddress(10, 0, 2, 1), IPAddress(255, 255, 0, 0));
 
 
     //WLAN, Passwort (zuhause)
-    // WiFi.begin("Vodafone-2584", "4EgXXA7R93x9ypCz");
+    WiFi.begin("Vodafone-2584", "4EgXXA7R93x9ypCz");
     
     //WLAN, Passwort (UNI)
     // WiFi.begin("DeziWLAN", "Ingwer-Zitrone");
@@ -62,10 +63,10 @@ void custom_setup() {
     //WLAN, Passwort (ZackZack)
     // WiFi.begin("ESPRESSOZACKZACK", "WIFIZACKZACK");
 
-    // while (!WiFi.isConnected()){
-    //     delay(100);
-    //     Serial.println("Connecting to WiFi..");
-    // }
+    while (!WiFi.isConnected()){
+        delay(100);
+        Serial.println("Connecting to WiFi..");
+    }
 
     // murmecha::display::clear();
     // murmecha::display::draw_info_screen;
@@ -73,7 +74,7 @@ void custom_setup() {
     // murmecha::display::update();
 
     //4444 port auf meinem Laptop
-    //udp.begin(4444);
+    udp.begin(4444);
 
 
     startTime = micros(); // Record the start time
@@ -115,11 +116,7 @@ void custom_loop() {
     // }
     // sende den Buffer über UDP...
 
-    // IP-Adresse 10, 0, 2 gesetzt, letzte Zahl kann gewählt werden außer 1, 42, 29, 137)
-    udp.beginPacket(IPAddress(10, 0, 2, 11), 4444);
-
-    udp.write((uint8_t *) &entry, sizeof(IMUData));
-    udp.endPacket();    
+     Serial.printf("packet sent");
 }
 
 void custom_loop_position()  {
