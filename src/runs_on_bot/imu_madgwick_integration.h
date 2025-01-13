@@ -10,7 +10,7 @@
 
 extern Quaternion orientation;
 
-void IRAM_ATTR timedUpdate();
+void IRAM_ATTR timedUpdate(murmecha::math::Vector3 computed_drifts);
 void reset_orientation();
 
 #endif
