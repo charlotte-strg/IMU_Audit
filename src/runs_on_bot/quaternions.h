@@ -4,7 +4,7 @@
 #include <cmath>
 
 struct Quaternion {
-    double w, x, y, z;
+    float w, x, y, z;
 
     static Quaternion identity() {
         return Quaternion{1.0, 0.0, 0.0, 0.0};

@@ -2,7 +2,7 @@
 
 // aufbau quaternionen
 struct Quaternion {
-    double w, x, y, z;
+    float w, x, y, z;
 
     // einheitsquaternion
     static Quaternion identity() {

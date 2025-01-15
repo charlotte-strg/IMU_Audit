@@ -3,16 +3,17 @@
 
 ### AKTUELL
 -----------------------------------------------------------------
-- arena-aufnahmen vorbereiten/daten sammeln für: 
-		fft
-		lowpass-filter
-		analyse fahrtweg gesamt (via doppel-integration accel)
-- pid controller (zielwinkel vorgeben) implementieren
+- vor jeder kurve und nach jeder kurve eine distinkte wlan-nachricht rausschicken als spalte im frame der wlanausgabe
+- radius auf 0 für quadrat ohne runde ecken
+- aus daten von david extrahieren, wie genau die kurven gefahren wurden unabhängig von den geraden
+- möglicherweise geraden verbessern mit madgwick auch möglich --> versuchen (sonst ausblick)
+- "zwischenstufe" via doppelintegration aufnahme arena (möglocherweise für einen anwendungsfall mit weniger rechenleistung geeignet)
+- pid controller (zielwinkel vorgeben) implementieren (sonst ausblick)
+- ausblick: visualisierung auf dem display für einfacheres handling der kalibrierung/debugging
 - saubere test-aufnahmen machen (arena): 
 		quadrat 
 		quadrat (runde ecken)
-		stehen/drift (10 s)
-		optional: beep/UV aus, wenn auf kopf gedreht
+		stehen/drift (1 s)
 
 nice to have:
 - wenn bot auf dem kopf steht, UV-LED ausschalten und beep
@@ -34,7 +35,6 @@ nice to have:
 - quaternionen/gesamtrotation/irreale zahlen
 
 ## Sonstiges/Nice to have:
-- kann mit python schreiben, muss aber später in c++ funktionieren mit libs, die arduino-kompatibel sind (liste angeblich auf platformIO)
 - sliding window für integration: praktisch, einen datenpunkt "aus der zukunft" zu haben, wenn man integriert, weil es dann entspannter wird, was auch immer das bedeutet
 
 
@@ -138,3 +138,8 @@ charlottes vorschlag:
 - mögliche implementierungen madgwick in square.cpp: stumpf (ist 90grad? falls ja weiter, falls nicht, zurück/vor drehen) oder
 - madgwick fertigschreiben
 - stehen/losfahren/90° drehung/weiterfahren/stehen, nur stehen (drift), drehen (360/180/90), kurve fahren und strecke vergleichen (ist strecke_accel == madgwick(strecke_accel, rotation_gyro)?)
+- arenaaufnahmen vorbereiten/daten sammeln für: 
+		fft
+		lowpass-filter
+		analyse fahrtweg gesamt (via doppel-integration accel)
+- kann mit python schreiben, muss aber später in c++ funktionieren mit libs, die arduino-kompatibel sind (liste angeblich auf platformIO)
