@@ -1,18 +1,18 @@
 ### FRAGEN FÜR KONSULTATION
 ----------------------------------------------------------------- 
+- präsentationstermin ausmachen
 
 ### AKTUELL
 -----------------------------------------------------------------
-- vor jeder kurve und nach jeder kurve eine distinkte wlan-nachricht rausschicken als spalte im frame der wlanausgabe
-- radius auf 0 für quadrat ohne runde ecken
-- aus daten von david extrahieren, wie genau die kurven gefahren wurden unabhängig von den geraden
+- aus daten von david extrahieren, wie genau die kurven gefahren wurden unabhängig von den geraden; dafür startpunkt und endpunkt der kurve finden und winkel zwischen ausrichtung(start) und ausrichtung(ende) errechnen --> ausgeben, brauche ich dafür nochmal eine aufnahme, die daten für startpunkt mit aufzeichnet? bisher nur ausgabe am ende der kurve
 - möglicherweise geraden verbessern mit madgwick auch möglich --> versuchen (sonst ausblick)
-- "zwischenstufe" via doppelintegration aufnahme arena (möglocherweise für einen anwendungsfall mit weniger rechenleistung geeignet)
-- pid controller (zielwinkel vorgeben) implementieren (sonst ausblick)
-- ausblick: visualisierung auf dem display für einfacheres handling der kalibrierung/debugging
+- **"zwischenstufe" via doppelintegration aufnahme arena (möglocherweise für einen anwendungsfall mit weniger rechenleistung geeignet)**
+
 - saubere test-aufnahmen machen (arena): 
-		quadrat 
-		quadrat (runde ecken)
+		quadrat madwick
+		quadrat madgwick (runde ecken)
+		quadrat integral
+		quadrat integral (runde ecken)
 		stehen/drift (1 s)
 
 nice to have:
@@ -143,3 +143,6 @@ charlottes vorschlag:
 		lowpass-filter
 		analyse fahrtweg gesamt (via doppel-integration accel)
 - kann mit python schreiben, muss aber später in c++ funktionieren mit libs, die arduino-kompatibel sind (liste angeblich auf platformIO)
+- radius auf 0 für quadrat ohne runde ecken
+- pid controller (zielwinkel vorgeben) implementieren (sonst ausblick)
+- ausblick: visualisierung auf dem display für einfacheres handling der kalibrierung/debugging

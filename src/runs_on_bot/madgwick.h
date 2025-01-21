@@ -11,7 +11,7 @@
 // const float beta = std::sqrt(3.0f / 4.0f) * gyroMeasError;  // berechne beta
 
 // applies madgwick filter to sensor data, returns quaternion
-Quaternion filterUpdate(
+Quaternion madgwick_filter(
     const Quaternion& q,
     float w_x, float w_y, float w_z,
     float a_x, float a_y, float a_z

@@ -12,7 +12,7 @@ constexpr float deltat = 1.034e-3; // realistische samplingzeit von 1.034ms
 const float beta = 0.42f; // beta, das david und ich festgelegt haben aufgrund von mean winkelgeschwindigkeit aus 1000 samples
 
 
-Quaternion filterUpdate(const Quaternion& q, float w_x, float w_y, float w_z, float a_x, float a_y, float a_z) {
+Quaternion madgwick_filter(const Quaternion& q, float w_x, float w_y, float w_z, float a_x, float a_y, float a_z) {
     // Local system variables
     float norm; // Vector norm
     float SEqDot_omega_1, SEqDot_omega_2, SEqDot_omega_3, SEqDot_omega_4; // Quaternion derivative from gyroscope elements

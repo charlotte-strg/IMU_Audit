@@ -13,7 +13,7 @@
 // float SEq_1 = 1.0f, SEq_2 = 0.0f, SEq_3 = 0.0f, SEq_4 = 0.0f; // estimated orientation quaternion elements with initial conditions
 
  
-// void filterUpdate(float w_x, float w_y, float w_z, float a_x, float a_y, float a_z)
+// void madgwick_filter(float w_x, float w_y, float w_z, float a_x, float a_y, float a_z)
 // {
 //     // Local system variables
 //     float norm; // vector norm

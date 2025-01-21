@@ -50,7 +50,7 @@
 
 // void custom_loop_test_madgwick() {
 // while(true) {
-//     timedUpdate(computed_drifts);
+//     update_orientation(computed_drifts);
 
 // //senden an david
 // udp.beginPacket(IPAddress(10, 0, 2, 137), 4444);

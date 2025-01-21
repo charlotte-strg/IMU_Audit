@@ -52,7 +52,8 @@ namespace motors {
 // Bewegungsfunktionen
 void drive_circle(float radius, float velocity);
 void drive_segment(float length, float velocity);
-void drive_curve(float radius, float angle, float velocity);
+void drive_curve_madgwick(float radius, float angle, float velocity);
+void drive_curve_integral(float radius, float angle, float velocity);
 
 } // namespace murmecha
 
