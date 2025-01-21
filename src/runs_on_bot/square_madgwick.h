@@ -9,6 +9,8 @@
 #include <motors.hpp>
 #include <pins.hpp>
 #include <driver/mcpwm.h>
+#include "imu_madgwick_integration.h"
+#include "imu_integral_integration.h"
 
 void custom_setup_square_madgwick();
 void custom_loop_square_madgwick();
