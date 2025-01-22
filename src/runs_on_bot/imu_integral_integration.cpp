@@ -20,8 +20,10 @@ void IRAM_ATTR update_orientation_integral(murmecha::math::Vector3 computed_drif
     murmecha::math::Vector3 computed_gyro = gyro - computed_drifts;
 
     // david: bitte nochmal * als operator definieren (skalarprodukt)
-    orientation_integral = orientation_integral + computed_gyro * deltat;
-
+    computed_gyro.x = computed_gyro.x * deltat;
+    computed_gyro.y = computed_gyro.y * deltat;
+    computed_gyro.z = computed_gyro.z * deltat;
+    orientation_integral = orientation_integral + computed_gyro;
 }    
 
 // orientierung zurücksetzen

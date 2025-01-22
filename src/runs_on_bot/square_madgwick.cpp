@@ -37,13 +37,14 @@ murmecha::math::Vector3 measure_gyro_drift() {
   
   for (uint32_t i = 0; i < sample_count; ++i) {
     mean = mean + samples[i];
+    Serial.printf("%f %f %f\n", samples[i].x, samples[i].y, samples[i].z);
   }
 
   return {mean.x / sample_count, mean.y / sample_count, mean.z / sample_count};
   
 }
 
-void drive_circle(float radius, float vm) {
+void drive_circle_madgwick(float radius, float vm) {
   float R_l = radius - R_perp;
   float R_r = radius + R_perp;
 
@@ -52,7 +53,7 @@ void drive_circle(float radius, float vm) {
   murmecha::motors::set_linear_velocities(v_l, v_r);
 }
 
-void drive_segment(float length, float vm) {
+void drive_segment_madgwick(float length, float vm) {
   float time = length / vm;
   motors::set_linear_velocities(vm, vm);
   delay(time*1000);
@@ -76,6 +77,11 @@ void drive_curve_madgwick(murmecha::math::Vector3 computed_drifts,float radius, 
   float v_r = 2 * vm / (1 + (R_l / R_r));
   float v_l = v_r * (R_l / R_r);
 
+  if(abs(radius)<1e-5){
+    v_l = -vm;
+    v_r = vm;
+  }
+
   // vor der Kurve senden an david f-ffff-int
   udp.beginPacket(IPAddress(10, 0, 2, 137), 4444);
   udp.write((uint8_t *) &start_curve, sizeof(start_curve));
@@ -89,7 +95,7 @@ void drive_curve_madgwick(murmecha::math::Vector3 computed_drifts,float radius, 
     while_counter++;
 
     // Abbruchkriterium, falls einer der Driftwerte > pi
-    if (computed_drifts.x > M_PI || computed_drifts.y > M_PI || computed_drifts.z > M_PI) {
+    if (abs(computed_drifts.x) > M_PI || abs(computed_drifts.y) > M_PI || abs(computed_drifts.z) > M_PI) {
       Serial.printf("Drift ist zu hoch: (%f %f %f)\n", computed_drifts.x, computed_drifts.y, computed_drifts.z);
       break;
     }
@@ -101,7 +107,7 @@ void drive_curve_madgwick(murmecha::math::Vector3 computed_drifts,float radius, 
   uint64_t end_time = micros();
   auto time_diff = end_time - start_time;
 
-  // nach der Kurve senden an david f-ffff-int-long-int
+  // nach der Kurve senden an david int-f-ffff-int-long
   udp.beginPacket(IPAddress(10, 0, 2, 137), 4444);
   udp.write((uint8_t *) &end_curve, sizeof(end_curve));
   udp.write((uint8_t *) &current_angle, sizeof(current_angle));
@@ -130,7 +136,12 @@ void drive_curve_integral(murmecha::math::Vector3 computed_drifts,float radius, 
   float v_r = 2 * vm / (1 + (R_l / R_r));
   float v_l = v_r * (R_l / R_r);
 
-  // vor der Kurve senden an david f-ffff-int
+  if(abs(radius)<1e-5){
+    v_l = -vm;
+    v_r = vm;
+  }
+
+  // vor der Kurve senden an david int-f-ffff
   udp.beginPacket(IPAddress(10, 0, 2, 137), 4444);
   udp.write((uint8_t *) &start_curve, sizeof(start_curve));
   udp.write((uint8_t *) &current_angle, sizeof(current_angle));
@@ -210,7 +221,7 @@ void custom_setup_square_madgwick() {
 
 void custom_loop_square_madgwick() {
 
-  drive_segment(250.0f, vel);
+  drive_segment_madgwick(250.0f, vel);
 
   // Ecke fahren
   // drive_curve_madgwick(computed_drifts, 0, M_PI/2, vel);
@@ -220,6 +231,9 @@ void custom_loop_square_madgwick() {
 
   // runde Ecke fahren mit integral
   // drive_curve_integral(computed_drifts, 100, M_PI/2, vel);
+
+  // Ecke fahren
+  // drive_curve_integral(computed_drifts, 0, M_PI/2, vel);
 
   murmecha::display::clear();
   murmecha::display::draw_info_screen(16);

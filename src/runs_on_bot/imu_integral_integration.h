@@ -6,7 +6,7 @@
 #include <robot.hpp>
 #include <array>
 
-murmecha::math::Vector3 orientation_integral;
+extern murmecha::math::Vector3 orientation_integral;
 
 void IRAM_ATTR update_orientation_integral(murmecha::math::Vector3 computed_drifts);
 void reset_orientation_integral();
