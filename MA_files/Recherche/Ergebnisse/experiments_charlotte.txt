@@ -1,0 +1,6 @@
+2025-01-22_15-06-50 IMU Madgwick Rounded
+2025-01-22_15-27-04 IMU Madgwick Square (fail)
+2025-01-22_16-03-09 IMU Madgwick Square (success)
+2025-01-22_16-54-27 IMU Integral Rounded
+2025-01-22_17-03-38 Time None Rounded
+
