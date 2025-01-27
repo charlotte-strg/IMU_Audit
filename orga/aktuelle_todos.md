@@ -4,8 +4,6 @@
 
 ### AKTUELL
 -----------------------------------------------------------------
-- aus positionsdaten der arena: ~2 sek vor/nach kurve --> winkel zwischen beiden geraden errechnen und abgleichen mit orientierung/angle aus bot daten, matchen der frame_nr
-- phi ist absoluter winkel zwischen datenpunkt und x-achse, wechselt bei quadrat ende anfang zwischen pi/-pi --> muss normiert oder festgelegt werden, z.b. wenn punkte in der nähe von pi sind, 2pi abziehen
 - möglicherweise geraden verbessern mit madgwick auch möglich --> versuchen (sonst ausblick)
 
 
@@ -143,3 +141,5 @@ charlottes vorschlag:
 - mal versuchen: referenzsystem ändern - schwerkraft rausrechnen z.b. mit bandpass 
 - diskrete fourier-transformation
 - möglichkeiten für gute visualisierung zum vergleich unterschiedlicher varianten (lowpass, kein lowpass, lowpass hardware, etc.), schön, aber momentan nicht am wichtigsten
+- aus positionsdaten der arena: ~2 sek vor/nach kurve --> winkel zwischen beiden geraden errechnen und abgleichen mit orientierung/angle aus bot daten, matchen der frame_nr
+- phi ist absoluter winkel zwischen datenpunkt und x-achse, wechselt bei quadrat ende anfang zwischen pi/-pi --> muss normiert oder festgelegt werden, z.b. wenn punkte in der nähe von pi sind, 2pi abziehen
