@@ -1,14 +1,23 @@
-# plot position of bot using data MA_files/2025-01-15_12-33-01.dat
-
 import pandas as pd
 import matplotlib.pyplot as plt
 
-file_path = "MA_files/2025-01-15_12-33-01.dat"
+### read in files
+#file_path = "MA_files/2025-01-15_12-33-01.dat"
+#file_path = "MA_files/Recherche/Ergebnisse/IMU_Integral_Rounded/2025-01-22_16-54-27.dat"
+#file_path = "MA_files/Recherche/Ergebnisse/IMU_Madgwick_Rounded/2025-01-22_15-06-50.dat"
+#file_path = "MA_files/Recherche/Ergebnisse/IMU_Madgwick_Square/2025-01-22_16-03-09.dat"
+#file_path = "MA_files/Recherche/Ergebnisse/IMU_Madgwick_Square_Fail/2025-01-22_15-27-04.dat"
+file_path = "MA_files/Recherche/Ergebnisse/Motors_None_Rounded/2025-01-22_17-03-38.dat"
+
+### read in data
 # read first 3000 rows
 # data = pd.read_csv(file_path, sep='\s+', nrows=3000)
+# read all rows except the last 20
+# data = pd.read_csv(file_path, sep='\s+', skipfooter=20, engine='python')
 # read all rows
 data = pd.read_csv(file_path, sep='\s+')
 
+### plot
 # plot for x and y
 x = data['x']
 y = data['y']

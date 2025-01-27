@@ -6,48 +6,32 @@
 -----------------------------------------------------------------
 - aus positionsdaten der arena: ~2 sek vor/nach kurve --> winkel zwischen beiden geraden errechnen und abgleichen mit orientierung/angle aus bot daten, matchen der frame_nr
 - phi ist absoluter winkel zwischen datenpunkt und x-achse, wechselt bei quadrat ende anfang zwischen pi/-pi --> muss normiert oder festgelegt werden, z.b. wenn punkte in der nähe von pi sind, 2pi abziehen
-- aus daten von david extrahieren, wie genau die kurven gefahren wurden unabhängig von den geraden; dafür startpunkt und endpunkt der kurve finden und winkel zwischen ausrichtung(start) und ausrichtung(ende) errechnen --> ausgeben, brauche ich dafür nochmal eine aufnahme, die daten für startpunkt mit aufzeichnet? bisher nur ausgabe am ende der kurve
 - möglicherweise geraden verbessern mit madgwick auch möglich --> versuchen (sonst ausblick)
-- **"zwischenstufe" via doppelintegration aufnahme arena (möglocherweise für einen anwendungsfall mit weniger rechenleistung geeignet)**
 
-- saubere test-aufnahmen machen (arena): 
-		quadrat madwick
-		quadrat madgwick (runde ecken)
-		quadrat integral
-		quadrat integral (runde ecken)
-		stehen/drift (1 s)
 
-nice to have:
-- wenn bot auf dem kopf steht, UV-LED ausschalten und beep
-- signal to noise ratio berechnen für mein csv signal
-- charakterisierung für signal (z.b. energie, irgendein maß, nicht amplitude) --> vergleich, wurzel der summe der quadrate von allen samples (mit/ohne lp vergleich)
-- mal versuchen: referenzsystem ändern - schwerkraft rausrechnen z.b. mit bandpass 
-- analyse: frequency response von meinem filter (faktoren mit denen einzelne frequenzen verstärkt/abgeschwächt wurden durch einsatz filter --> plotten)
-- low pass hardware aktivieren und testen, LPF2 (siehe IMU-handbuch), vergleich  mit signal to noise ratio in db
 
 
 ## Theorieteil, den ich schon recherchieren/schreiben kann 
 ## (?) - noch nicht sicher, ob für MA relevant
-- diskrete fourier-transformation
 - types of noise einordnen, zusammenhang mit fft 
 - bandpassfilter und alternativen
 
-## Theorierecherche:
+## Recherche:
 - was sind lineare (signal-)filter/finite impulse response?
 - quaternionen/gesamtrotation/irreale zahlen
 
 ## Sonstiges/Nice to have:
 - sliding window für integration: praktisch, einen datenpunkt "aus der zukunft" zu haben, wenn man integriert, weil es dann entspannter wird, was auch immer das bedeutet
+nice to have:
+- wenn bot auf dem kopf steht, UV-LED ausschalten und beep
+- signal to noise ratio berechnen für mein csv signal
+- charakterisierung für signal (z.b. energie, irgendein maß, nicht amplitude) --> vergleich, wurzel der summe der quadrate von allen samples (mit/ohne lp vergleich)
+- analyse: frequency response von meinem filter (faktoren mit denen einzelne frequenzen verstärkt/abgeschwächt wurden durch einsatz filter --> plotten)
+- low pass hardware aktivieren und testen, LPF2 (siehe IMU-handbuch), vergleich  mit signal to noise ratio in db
 
 
 ### ON HOLD
 -----------------------------------------------------------------
-- möglichkeiten für gute visualisierung zum vergleich unterschiedlicher varianten (lowpass, kein lowpass, lowpass hardware, etc.), schön, aber momentan nicht am wichtigsten
-
-
-
-
-
 
 
 
@@ -148,3 +132,14 @@ charlottes vorschlag:
 - radius auf 0 für quadrat ohne runde ecken
 - pid controller (zielwinkel vorgeben) implementieren (sonst ausblick)
 - ausblick: visualisierung auf dem display für einfacheres handling der kalibrierung/debugging
+- saubere test-aufnahmen machen (arena): 
+		quadrat madwick
+		quadrat madgwick (runde ecken)
+		quadrat integral
+		quadrat integral (runde ecken)
+		stehen/drift (1 s)
+- aus daten von david extrahieren, wie genau die kurven gefahren wurden unabhängig von den geraden; dafür startpunkt und endpunkt der kurve finden und winkel zwischen ausrichtung(start) und ausrichtung(ende) errechnen --> ausgeben, brauche ich dafür nochmal eine aufnahme, die daten für startpunkt mit aufzeichnet? bisher nur ausgabe am ende der kurve
+- "zwischenstufe" via doppelintegration aufnahme arena (möglicherweise für einen anwendungsfall mit weniger rechenleistung geeignet)
+- mal versuchen: referenzsystem ändern - schwerkraft rausrechnen z.b. mit bandpass 
+- diskrete fourier-transformation
+- möglichkeiten für gute visualisierung zum vergleich unterschiedlicher varianten (lowpass, kein lowpass, lowpass hardware, etc.), schön, aber momentan nicht am wichtigsten
