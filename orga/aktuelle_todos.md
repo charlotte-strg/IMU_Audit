@@ -5,9 +5,18 @@
 ### AKTUELL
 -----------------------------------------------------------------
 - möglicherweise geraden verbessern mit madgwick auch möglich --> versuchen (sonst ausblick)
-
-
-
+- berechnete abweichungen von rad in grad umrechnen
+- abbildungen nochmal generieren, dabei datensets als csv speichern und sicherstellen, dass pro methode genau 40 kurven betrachtet werden
+- reinschreiben, wann ich daten manipuliert habe (z.b. 10 runden wurden gefahren)
+- hunspell, aspell für spellchecking (regelbasiert)
+- darf ich bunte abbildungen haben? --> ja, aber schauen, dass es barrierefrei ist für farbenblinde
+- tix für abbildungen in latex, R + ggplot oder Python + matplotlib am besten in pdf oder svg format
+- drift accel in anhang für interessierte leser*innen
+- pid controller implementieren für kurven UND geraden:
+	madgwick durchgehend berechnen
+	zielwinkel im verhältnis zum ausgangspunkt 0: 0,90,180,-90,0
+- fourier-transformation aufnahme machen 1s
+- accel-drift aufnahme machen 1s
 
 ## Theorieteil, den ich schon recherchieren/schreiben kann 
 ## (?) - noch nicht sicher, ob für MA relevant

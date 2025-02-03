@@ -22,6 +22,14 @@ murmecha::math::Vector3 computed_drifts;
 const int sample_count = 1000;
 murmecha::math::Vector3 samples[sample_count];
 
+// pid-params
+float p = 0.5;
+float i = 0.01;
+float d = 0.1;
+
+float previous_error = 0;
+float integral = 0;
+
 //Wifi Setup
 extern WiFiUDP udp;
 
@@ -44,7 +52,7 @@ murmecha::math::Vector3 measure_gyro_drift() {
   
 }
 
-void drive_circle_madgwick(float radius, float vm) {
+void drive_circle_motors(float radius, float vm) {
   float R_l = radius - R_perp;
   float R_r = radius + R_perp;
 
@@ -53,10 +61,72 @@ void drive_circle_madgwick(float radius, float vm) {
   murmecha::motors::set_linear_velocities(v_l, v_r);
 }
 
-void drive_segment_madgwick(float length, float vm) {
+void drive_segment_motors(float length, float vm) {
   float time = length / vm;
   motors::set_linear_velocities(vm, vm);
   delay(time*1000);
+  motors::set_linear_velocities(0, 0);
+}
+
+// pid-controller für winkel-regelung, gibt nötige änderung der motorgeschwindigkeit als float zurück
+float pid_control(float target_angle, float current_angle) {
+    float error = target_angle - current_angle;
+
+    // fehler zwischen pi/-pi bringen
+    while (error > 180) error -= 360;
+    while (error < -180) error += 360;
+
+    integral += error;
+    float derivative = error - previous_error;
+    previous_error = error;
+
+    return p * error + i * integral + d * derivative;
+}
+
+// strecke fahren mit madgwick, muss noch überarbeitet werden
+void drive_segment_madgwick(float length, float vm) {
+  int start_segment = 2;
+  int end_segment = 3;
+
+  reset_orientation_madgwick();
+  Quaternion q_initial = Quaternion::identity();
+  float current_length = 0; 
+  float current_angle = 0;
+
+  float v_r = vm;
+  float v_l = vm;
+
+  // vor dem Segment senden an david int-f-f-ffff
+  udp.beginPacket(IPAddress(10, 0, 2, 137), 4444);
+  udp.write((uint8_t *) &start_segment, sizeof(start_segment));
+  udp.write((uint8_t *) &current_angle, sizeof(current_angle));
+  udp.write((uint8_t *) &current_length, sizeof(current_length));
+  udp.write((uint8_t *) &orientation_madgwick, sizeof(orientation_madgwick));
+  udp.endPacket();
+
+  int while_counter = 0;
+  uint64_t start_time = micros();
+  while(current_length < length) {
+    while_counter++;
+
+    update_orientation_madgwick(computed_drifts);
+    motors::set_linear_velocities(v_l, v_r);
+
+    // hier bin ich nicht sicher: zwischen welchen punkten soll ich die distanz berechnen?
+    current_length = calculateTranslationDistance(q_initial, orientation_madgwick);
+    delay(1);
+  }
+  uint64_t end_time = micros();
+  auto time_diff = end_time - start_time;
+
+  // nach dem Segment senden an david int-f-ffff-int-long
+  udp.beginPacket(IPAddress(10, 0, 2, 137), 4444);
+  udp.write((uint8_t *) &end_segment, sizeof(end_segment));
+  udp.write((uint8_t *) &current_length, sizeof(current_length));
+  udp.write((uint8_t *) &orientation_madgwick, sizeof(orientation_madgwick));
+  udp.write((uint8_t *) &time_diff, sizeof(time_diff));
+  udp.endPacket();
+
   motors::set_linear_velocities(0, 0);
 }
 
@@ -82,7 +152,7 @@ void drive_curve_madgwick(murmecha::math::Vector3 computed_drifts,float radius, 
     v_r = vm;
   }
 
-  // vor der Kurve senden an david f-ffff-int
+  // vor der Kurve senden an david int-f-ffff
   udp.beginPacket(IPAddress(10, 0, 2, 137), 4444);
   udp.write((uint8_t *) &start_curve, sizeof(start_curve));
   udp.write((uint8_t *) &current_angle, sizeof(current_angle));
@@ -99,6 +169,7 @@ void drive_curve_madgwick(murmecha::math::Vector3 computed_drifts,float radius, 
       Serial.printf("Drift ist zu hoch: (%f %f %f)\n", computed_drifts.x, computed_drifts.y, computed_drifts.z);
       break;
     }
+
     update_orientation_madgwick(computed_drifts);
     motors::set_linear_velocities(v_l, v_r);
     current_angle = calculateRotationAngle(q_initial, orientation_madgwick);
@@ -221,7 +292,7 @@ void custom_setup_square_madgwick() {
 
 void custom_loop_square_madgwick() {
 
-  drive_segment_madgwick(250.0f, vel);
+  drive_segment_motors(250.0f, vel);
 
   // Ecke fahren
   // drive_curve_madgwick(computed_drifts, 0, M_PI/2, vel);
@@ -239,4 +310,56 @@ void custom_loop_square_madgwick() {
   murmecha::display::draw_info_screen(16);
   murmecha::display::draw_tracking_code(16);
   murmecha::display::update();
+}
+
+void custom_setup_square_pid() {
+  Serial.begin(115200);
+  murmecha::config_t config;
+  config.use_microstepping = false;
+  murmecha::begin(config);
+  // murmecha::uv::set(1.0f);
+  // murmecha::rgb::set_led_color(0, 64, 0, 0);
+  murmecha::display::invert();
+  murmecha::display::clear();
+  murmecha::display::draw_tracking_code(16);
+  murmecha::display::draw_info_screen(16);
+  murmecha::display::update();
+  murmecha::imu::set_accel_data_rate(murmecha::imu::DATA_RATE_1_6kHz);
+  murmecha::imu::set_gyro_data_rate(murmecha::imu::DATA_RATE_1_6kHz);
+
+  // IP-Adresse (6 für bot mit nummer 6), Gateway, an wen senden (zuhause)
+  WiFi.config(IPAddress(10, 0, 1, 22), IPAddress(10, 0, 2, 1), IPAddress(255, 255, 0, 0));
+  //WLAN, Passwort (UNI)
+  WiFi.begin("DeziWLAN", "Ingwer-Zitrone");
+  while (!WiFi.isConnected()){
+    delay(100);
+    Serial.println("Connecting to WiFi..");
+  }
+
+  // WiFi.begin("Vodafone-2584", "4EgXXA7R93x9ypCz");
+  // while (!WiFi.isConnected()){
+  //   delay(100);
+  //   Serial.println("Connecting to WiFi..");
+  // }
+
+  // //4444 port auf meinem Laptop
+  // udp.begin(4444);
+
+  delay(2000);
+  murmecha::motors::beep(1200,500);
+
+  computed_drifts = measure_gyro_drift();
+
+  Serial.printf("Drift: (%f %f %f)\n", computed_drifts.x, computed_drifts.y, computed_drifts.z);
+}
+
+void custom_loop_square_pid() {
+  
+  drive_square_pid();
+  
+    murmecha::display::clear();
+    murmecha::display::draw_info_screen(16);
+    murmecha::display::draw_tracking_code(16);
+    murmecha::display::update();
+
 }
