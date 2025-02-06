@@ -26,6 +26,7 @@ murmecha::math::Vector3 samples[sample_count];
 float p = 0.5;
 float i = 0.01;
 float d = 0.1;
+auto q_initial_pid = Quaternion::identity();
 
 float previous_error = 0;
 float integral = 0;
@@ -70,18 +71,84 @@ void drive_segment_motors(float length, float vm) {
 
 // pid-controller für winkel-regelung, gibt nötige änderung der motorgeschwindigkeit als float zurück
 float pid_control(float target_angle, float current_angle) {
-    float error = target_angle - current_angle;
+  float error = target_angle - current_angle;
 
-    // fehler zwischen pi/-pi bringen
-    while (error > 180) error -= 360;
-    while (error < -180) error += 360;
+  // fehler zwischen pi/-pi bringen, modulo 2pi, dann verschiebung um -pi
+  error = fmod(error + M_PI, 2 * M_PI) - M_PI;
 
-    integral += error;
-    float derivative = error - previous_error;
-    previous_error = error;
+  integral += error;
+  float derivative = error - previous_error;
+  previous_error = error;
 
-    return p * error + i * integral + d * derivative;
+  return p * error + i * integral + d * derivative;
 }
+
+// setzt alle params für pid-steuerung zurück
+void reset_pid() {
+  previous_error = 0;
+  integral = 0;
+}
+
+// pid-output umgewandelt in radgeschwindigkeiten und gibt tupel aus
+std::tuple<float, float> pid_to_wheel_speeds(float pid_output, float base_speed) {
+    return {
+      base_speed - pid_output,
+      base_speed + pid_output
+    };
+}
+
+// fährt strecke mit pid-regler
+void drive_segment_pid(murmecha::math::Vector3 computed_drifts, float length, float vm, float final_angle) {
+  float traveled_distance = 0;
+  float dt = 0.01;
+
+  while (traveled_distance < length) {
+      update_orientation_madgwick(computed_drifts);
+      float current_angle = calculateRotationAngle(q_initial_pid, orientation_madgwick);
+      float pid_output = pid_control(final_angle, current_angle);
+
+      auto [v_l, v_r] = pid_to_wheel_speeds(pid_output, vm);
+
+      motors::set_linear_velocities(v_l, v_r);
+      delay(dt * 1000);
+
+      // wie errechne ich distanz? kann so nicht bleiben
+      traveled_distance += vm * dt;
+  }
+
+  motors::set_linear_velocities(0, 0);
+}
+
+// fährt kurve mit pid-regler
+void drive_curve_pid(murmecha::math::Vector3 computed_drifts, float radius, float vm_cm_per_min, float final_angle) {
+    float start_angle = final_angle - M_PI / 2;
+    float length = radius * (M_PI / 2);  
+    float traveled_distance = 0;
+    float dt = 0.01;
+
+    float vm = vm_cm_per_min / 6000.0; 
+
+    while (traveled_distance < length) {
+        update_orientation_madgwick(computed_drifts);
+
+        float progress = traveled_distance / length;
+        float target_angle = start_angle + progress * (final_angle - start_angle);
+
+        float pid_output = pid_control(target_angle, current_angle);
+
+        auto [v_l, v_r] = pid_to_wheel_speeds(pid_output, vm);  
+
+        motors::set_linear_velocities(v_l, v_r);
+        delay(dt * 1000);
+
+        traveled_distance += vm * dt;
+    }
+
+    motors::set_linear_velocities(0, 0);  
+}
+
+
+
 
 // strecke fahren mit madgwick, muss noch überarbeitet werden
 void drive_segment_madgwick(float length, float vm) {
@@ -131,7 +198,7 @@ void drive_segment_madgwick(float length, float vm) {
 }
 
 // kurve fahren mit madgwick
-void drive_curve_madgwick(murmecha::math::Vector3 computed_drifts,float radius, float angle, float vm) {
+void drive_curve_madgwick(murmecha::math::Vector3 computed_drifts, float radius, float target_angle, float vm) {
   int start_curve = 1;
   int end_curve = 0;
 
@@ -147,6 +214,7 @@ void drive_curve_madgwick(murmecha::math::Vector3 computed_drifts,float radius, 
   float v_r = 2 * vm / (1 + (R_l / R_r));
   float v_l = v_r * (R_l / R_r);
 
+  // wenn square mit scharfen ecken
   if(abs(radius)<1e-5){
     v_l = -vm;
     v_r = vm;
@@ -161,7 +229,7 @@ void drive_curve_madgwick(murmecha::math::Vector3 computed_drifts,float radius, 
 
   int while_counter = 0;
   uint64_t start_time = micros();
-  while(current_angle < angle) {
+  while(current_angle < target_angle) {
     while_counter++;
 
     // Abbruchkriterium, falls einer der Driftwerte > pi
@@ -336,15 +404,6 @@ void custom_setup_square_pid() {
     Serial.println("Connecting to WiFi..");
   }
 
-  // WiFi.begin("Vodafone-2584", "4EgXXA7R93x9ypCz");
-  // while (!WiFi.isConnected()){
-  //   delay(100);
-  //   Serial.println("Connecting to WiFi..");
-  // }
-
-  // //4444 port auf meinem Laptop
-  // udp.begin(4444);
-
   delay(2000);
   murmecha::motors::beep(1200,500);
 
@@ -355,11 +414,12 @@ void custom_setup_square_pid() {
 
 void custom_loop_square_pid() {
   
-  drive_square_pid();
+  drive_segment_pid();
+  drive_curve_pid();
   
-    murmecha::display::clear();
-    murmecha::display::draw_info_screen(16);
-    murmecha::display::draw_tracking_code(16);
-    murmecha::display::update();
+  murmecha::display::clear();
+  murmecha::display::draw_info_screen(16);
+  murmecha::display::draw_tracking_code(16);
+  murmecha::display::update();
 
 }

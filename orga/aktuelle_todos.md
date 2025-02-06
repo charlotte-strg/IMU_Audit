@@ -4,19 +4,20 @@
 
 ### AKTUELL
 -----------------------------------------------------------------
-- möglicherweise geraden verbessern mit madgwick auch möglich --> versuchen (sonst ausblick)
-- berechnete abweichungen von rad in grad umrechnen
-- abbildungen nochmal generieren, dabei datensets als csv speichern und sicherstellen, dass pro methode genau 40 kurven betrachtet werden
-- reinschreiben, wann ich daten manipuliert habe (z.b. 10 runden wurden gefahren)
+# Formatierung:
 - hunspell, aspell für spellchecking (regelbasiert)
-- darf ich bunte abbildungen haben? --> ja, aber schauen, dass es barrierefrei ist für farbenblinde
-- tix für abbildungen in latex, R + ggplot oder Python + matplotlib am besten in pdf oder svg format
-- drift accel in anhang für interessierte leser*innen
-- pid controller implementieren für kurven UND geraden:
+- reinschreiben, wann ich daten manipuliert habe (z.b. 10 runden wurden gefahren)
+- abbildungen nochmal generieren, dabei datensets als csv speichern und sicherstellen, dass pro methode genau 40 kurven betrachtet werden
+- abbildungen fertig formatieren: tix für abbildungen in latex, R + ggplot oder Python + matplotlib am besten in pdf oder svg format, barrierefreie farben, berechnete abweichungen von rad in grad umrechnen
+
+# Implementierung:
+mit Max:
+- pid controller implementieren für kurven UND geraden (inkl. madgwick):
 	madgwick durchgehend berechnen
 	zielwinkel im verhältnis zum ausgangspunkt 0: 0,90,180,-90,0
+Choubi allein:
 - fourier-transformation aufnahme machen 1s
-- accel-drift aufnahme machen 1s
+- accel-drift aufnahme machen 1s, in anhang
 
 ## Theorieteil, den ich schon recherchieren/schreiben kann 
 ## (?) - noch nicht sicher, ob für MA relevant
@@ -152,3 +153,4 @@ charlottes vorschlag:
 - möglichkeiten für gute visualisierung zum vergleich unterschiedlicher varianten (lowpass, kein lowpass, lowpass hardware, etc.), schön, aber momentan nicht am wichtigsten
 - aus positionsdaten der arena: ~2 sek vor/nach kurve --> winkel zwischen beiden geraden errechnen und abgleichen mit orientierung/angle aus bot daten, matchen der frame_nr
 - phi ist absoluter winkel zwischen datenpunkt und x-achse, wechselt bei quadrat ende anfang zwischen pi/-pi --> muss normiert oder festgelegt werden, z.b. wenn punkte in der nähe von pi sind, 2pi abziehen
+- darf ich bunte abbildungen haben? --> ja, aber schauen, dass es barrierefrei ist für farbenblinde
