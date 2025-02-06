@@ -5,7 +5,7 @@
 
 
 // System constants
-constexpr float deltat = 1.034e-3; // realistische samplingzeit von 1.034ms
+constexpr float deltat = 2*1.034e-3; // realistische samplingzeit von 1.034ms
 //constexpr float deltat = 0.001f; // Sampling period in seconds (1 ms)
 //constexpr float gyroMeasError = M_PI * (5.0f / 180.0f); // Gyroscope measurement error in rad/s (5 deg/s)
 //const float beta = std::sqrt(3.0f / 4.0f) * gyroMeasError; // Compute beta

@@ -25,6 +25,10 @@ Quaternion multiplyQuaternions(const Quaternion& q1, const Quaternion& q2) {
     return result;
 }
 
+template <typename T> int sign(T val) {
+    return (T(0) < val) - (val < T(0));
+}
+
 // drehwinkel zwischen 2 positionen (quaternions) errechnen in bogenmaß
 double calculateRotationAngle(const Quaternion& q_initial, const Quaternion& q_current) {
     // berechne inverses quaternion von q_initial
@@ -33,8 +37,11 @@ double calculateRotationAngle(const Quaternion& q_initial, const Quaternion& q_c
     // berechne relatives quaternion (multipliziere aktuelle position mit inversen initialen quaternion)
     Quaternion q_relative = multiplyQuaternions(q_current, q_initial_inv);
 
+    auto length = sqrtf(q_relative.x*q_relative.x + q_relative.y*q_relative.y + q_relative.z*q_relative.z);
+    
     // berechne drehwinkels in bogenmaß
     double angle = 2.0 * std::acos(q_relative.w);
+    //auto angle = 2 * atan2f(length, q_relative.w);
 
-    return angle;
+    return sign(q_relative.z / length) * angle;
 }

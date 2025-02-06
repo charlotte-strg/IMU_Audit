@@ -10,6 +10,8 @@
 #include "imu_madgwick_integration.h"
 #include "imu_integral_integration.h"
 
+#include <complex>
+
 #define bufferSize 256
 
 using namespace murmecha;
@@ -23,9 +25,12 @@ const int sample_count = 1000;
 murmecha::math::Vector3 samples[sample_count];
 
 // pid-params
-float p = 0.5;
-float i = 0.01;
-float d = 0.1;
+float p = 60;
+float i = 0.025;
+float d = 9;
+
+const float sensitivity = 1.0f;
+
 auto q_initial_pid = Quaternion::identity();
 
 float previous_error = 0;
@@ -71,10 +76,16 @@ void drive_segment_motors(float length, float vm) {
 
 // pid-controller für winkel-regelung, gibt nötige änderung der motorgeschwindigkeit als float zurück
 float pid_control(float target_angle, float current_angle) {
-  float error = target_angle - current_angle;
+  //float error = target_angle - current_angle;
 
+  std::complex<float> target_dir(cosf(target_angle), sinf(target_angle));
+  std::complex<float> current_dir(cosf(current_angle), sinf(current_angle));
+
+  auto dir_diff = conj(target_dir) * current_dir;
+  float error = atan2f(dir_diff.imag(), dir_diff.real());
+  
   // fehler zwischen pi/-pi bringen, modulo 2pi, dann verschiebung um -pi
-  error = fmod(error + M_PI, 2 * M_PI) - M_PI;
+  //error = fmod(error + M_PI, 2 * M_PI) - M_PI;
 
   integral += error;
   float derivative = error - previous_error;
@@ -92,8 +103,8 @@ void reset_pid() {
 // pid-output umgewandelt in radgeschwindigkeiten und gibt tupel aus
 std::tuple<float, float> pid_to_wheel_speeds(float pid_output, float base_speed) {
     return {
-      base_speed - pid_output,
-      base_speed + pid_output
+      base_speed + sensitivity * pid_output,
+      base_speed - sensitivity * pid_output
     };
 }
 
@@ -120,6 +131,7 @@ void drive_segment_pid(murmecha::math::Vector3 computed_drifts, float length, fl
 }
 
 // fährt kurve mit pid-regler
+/*
 void drive_curve_pid(murmecha::math::Vector3 computed_drifts, float radius, float vm_cm_per_min, float final_angle) {
     float start_angle = final_angle - M_PI / 2;
     float length = radius * (M_PI / 2);  
@@ -145,7 +157,7 @@ void drive_curve_pid(murmecha::math::Vector3 computed_drifts, float radius, floa
     }
 
     motors::set_linear_velocities(0, 0);  
-}
+    }*/
 
 
 
@@ -180,7 +192,7 @@ void drive_segment_madgwick(float length, float vm) {
     motors::set_linear_velocities(v_l, v_r);
 
     // hier bin ich nicht sicher: zwischen welchen punkten soll ich die distanz berechnen?
-    current_length = calculateTranslationDistance(q_initial, orientation_madgwick);
+    //current_length = calculateTranslationDistance(q_initial, orientation_madgwick);
     delay(1);
   }
   uint64_t end_time = micros();
@@ -414,8 +426,7 @@ void custom_setup_square_pid() {
 
 void custom_loop_square_pid() {
   
-  drive_segment_pid();
-  drive_curve_pid();
+  
   
   murmecha::display::clear();
   murmecha::display::draw_info_screen(16);
