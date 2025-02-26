@@ -147,9 +147,6 @@ void drive_curve_pid(murmecha::math::Vector3 computed_drifts, float radius, floa
     motors::set_linear_velocities(0, 0);  
 }
 
-
-
-
 // strecke fahren mit madgwick, muss noch überarbeitet werden
 void drive_segment_madgwick(float length, float vm) {
   int start_segment = 2;
@@ -413,9 +410,11 @@ void custom_setup_square_pid() {
 }
 
 void custom_loop_square_pid() {
-  
-  drive_segment_pid();
-  drive_curve_pid();
+
+  // kalibrierung
+  // madgwick aktualisieren
+  // pid aktualisieren
+  // wheel speeds aktualisieren
   
   murmecha::display::clear();
   murmecha::display::draw_info_screen(16);

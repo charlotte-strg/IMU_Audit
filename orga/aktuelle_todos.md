@@ -1,23 +1,28 @@
 ### FRAGEN FÜR KONSULTATION
 ----------------------------------------------------------------- 
-- präsentationstermin ausmachen
+- alle quadrate: es fehlt ein datenset zum ende der kurve (siehe plot_position), neue aufnahme machen
+- 
+
+welches modell als vergleich zu PID auf gerade benutzt? motors oder integral?
 
 ### AKTUELL
 -----------------------------------------------------------------
 # Formatierung:
 - hunspell, aspell für spellchecking (regelbasiert)
-- reinschreiben, wann ich daten manipuliert habe (z.b. 10 runden wurden gefahren)
 - abbildungen nochmal generieren, dabei datensets als csv speichern und sicherstellen, dass pro methode genau 40 kurven betrachtet werden
 - abbildungen fertig formatieren: tix für abbildungen in latex, R + ggplot oder Python + matplotlib am besten in pdf oder svg format, barrierefreie farben, berechnete abweichungen von rad in grad umrechnen
+- accel-drift aufnahme in anhang
+- fourier-transformation abbildung erstellen
+
+# Inhalt:
+- reinschreiben, wann ich daten manipuliert habe (z.b. 10 runden wurden gefahren)
+- pid: funktioniert nicht gut, weil drift über gesamte laufzeit zu hoch wird (weil nur am anfang der aufnahme kalibriert wird); kurvenwinkel messbar durch current angle, wenn target winkel sich ändert
+- besser wäre: nach und vor jeder kurve reset (pid auf strecke, madgwick auf kurve); vorteil: kalibrierung verhindert drift über die zeit
+- ausblick: magnetometer (ausgerichtet an magnetfeld der erde) könnte helfen, weil nordausrichtung eine feste größe ist. ein weiteres koordinatensystem, an dem sich orientiert werden kann
+- ausblick: pid-tuning mit neuronalem netz möglich
 
 # Implementierung:
-mit Max:
-- pid controller implementieren für kurven UND geraden (inkl. madgwick):
-	madgwick durchgehend berechnen
-	zielwinkel im verhältnis zum ausgangspunkt 0: 0,90,180,-90,0
-Choubi allein:
-- fourier-transformation aufnahme machen 1s
-- accel-drift aufnahme machen 1s, in anhang
+
 
 ## Theorieteil, den ich schon recherchieren/schreiben kann 
 ## (?) - noch nicht sicher, ob für MA relevant
@@ -154,3 +159,7 @@ charlottes vorschlag:
 - aus positionsdaten der arena: ~2 sek vor/nach kurve --> winkel zwischen beiden geraden errechnen und abgleichen mit orientierung/angle aus bot daten, matchen der frame_nr
 - phi ist absoluter winkel zwischen datenpunkt und x-achse, wechselt bei quadrat ende anfang zwischen pi/-pi --> muss normiert oder festgelegt werden, z.b. wenn punkte in der nähe von pi sind, 2pi abziehen
 - darf ich bunte abbildungen haben? --> ja, aber schauen, dass es barrierefrei ist für farbenblinde
+- pid controller implementieren für kurven UND geraden (inkl. madgwick):
+	madgwick durchgehend berechnen
+	zielwinkel im verhältnis zum ausgangspunkt 0: 0,90,180,-90,0
+- präsentationstermin ausmachen

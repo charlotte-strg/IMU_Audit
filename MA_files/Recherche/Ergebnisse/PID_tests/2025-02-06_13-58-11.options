@@ -1,0 +1,17 @@
+input = /dev/v4l/by-id/usb-Elgato_Cam_Link_4K_0004E8C409000-video-index0
+display = true
+plugin = plugins/simple-logging.so
+output-dir = charlotte/
+led = true
+plugin = plugins/video-writer.so
+plugin = plugins/decode.py
+decode-port = 4444
+video-frame-fraction = 2
+help = false
+display-height = 720
+fps = 25.0
+homography = homography.txt
+height = 2160
+display-width = 1280
+width = 3840
+benchmark = 1000
