@@ -107,32 +107,33 @@ def receive_data(rec_time_sek: float) -> pd.DataFrame:
 #     berechnung weg/rotation für vergleich mit wahrheitswerten aus arena
 #     madgwick/mahony/kalman vergleich performance/genauigkeit 
 
-def master(
-        parameter_sets: list[TestCalcParams]  # type: ignore
-    ):
-    # daten sammeln
-    # accel/gyro daten über wifi? live senden oder speichern?
-    df_sensor_data = receive_data(10)
 
-    # for parameter_set in parameter_sets:
-        # berechnungen
-        # berechnung lowpass? hard/soft lp? mit welchem cutoff?
-        # berechnung fourier transformation?
-        # berechnung weg/rotation?
-        # berechnung madgwick/mahony/kalman?
+# dsef master(
+#         parameter_sets: list[TestCalcParams]  # type: ignore
+#     ):
+#     # daten sammeln
+#     # accel/gyro daten über wifi? live senden oder speichern?
+#     df_sensor_data = receive_data(10)
+
+#     # for parameter_set in parameter_sets:
+#         # berechnungen
+#         # berechnung lowpass? hard/soft lp? mit welchem cutoff?
+#         # berechnung fourier transformation?
+#         # berechnung weg/rotation?
+#         # berechnung madgwick/mahony/kalman?
     
-    # visualisierung
-    # visualisierung gewünscht? wovon?
+#     # visualisierung
+#     # visualisierung gewünscht? wovon?
 
-    # speichern der ...
-        # sensordaten
-        # params
-        # visualisierung
+#     # speichern der ...
+#         # sensordaten
+#         # params
+#         # visualisierung
 
-    # ausgabe einer empfehlung
-        # eingabe
-        # bestes parameterset
-    pass
+#     # ausgabe einer empfehlung
+#         # eingabe
+#         # bestes parameterset
+#     pass
 
 
 # enum mit werten: madgwick, mahony, kalman, undefined

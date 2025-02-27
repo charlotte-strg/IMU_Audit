@@ -1,9 +1,8 @@
 ### FRAGEN FÜR KONSULTATION
 ----------------------------------------------------------------- 
-- alle quadrate: es fehlt ein datenset zum ende der kurve (siehe plot_position), neue aufnahme machen
-- 
-
-welches modell als vergleich zu PID auf gerade benutzt? motors oder integral?
+- alle quadrate: es fehlt ein datenset zum ende der kurve (siehe plot_position), neue aufnahmen machen
+- welches modell als vergleich zu PID auf gerade benutzt? motors oder integral?
+- haben wir die dft aufnahme 1s oder 2s laufen lassen?
 
 ### AKTUELL
 -----------------------------------------------------------------

@@ -12,9 +12,9 @@ import matplotlib.pyplot as plt
 
 ##  Quadrat, runde Ecken, IMU, Madgwick
 # eine ecke zu wenig
-last_row = 8259
-title = "Fahren eines Quadrats mit abgerundeten Ecken:\n Bewegungspfad des Roboters in der Arena \n mit Madgwick-Filter"
-file_path = "MA_files/Recherche/Ergebnisse/IMU_Madgwick_Rounded/2025-01-22_15-06-50.dat"
+# last_row = 8259
+# title = "Fahren eines Quadrats mit abgerundeten Ecken:\n Bewegungspfad des Roboters in der Arena \n mit Madgwick-Filter"
+# file_path = "MA_files/Recherche/Ergebnisse/IMU_Madgwick_Rounded/2025-01-22_15-06-50.dat"
 
 ##  Quadrat, scharfe Ecken, IMU, Madgwick
 # #problem: aufnahme startet zwar schon vorher aber kurve 1 ist eigentlich schon kurve 3 (bei frame 571)
@@ -38,7 +38,7 @@ file_path = "MA_files/Recherche/Ergebnisse/IMU_Madgwick_Rounded/2025-01-22_15-06
 ##  Gerade, IMU, PID
 # funktioniert
 # title = "Fahren einer Gerade:\n Bewegungspfad des Roboters in der Arena \n mit PID-Regler"
-# file_path = "MA_files/Recherche/Ergebnisse/PID_tests/2025-02-06_14-05-57.dat"
+file_path = "MA_files/Recherche/Ergebnisse/PID_tests/2025-02-06_14-05-57.dat"
 
 ##  Gerade, Motors, None
 # funktioniert
@@ -51,9 +51,9 @@ file_path = "MA_files/Recherche/Ergebnisse/IMU_Madgwick_Rounded/2025-01-22_15-06
 # read all rows except the last 20
 # data = pd.read_csv(file_path, sep='\s+', skipfooter=20, engine='python')
 # read all rows
-# data = pd.read_csv(file_path, sep='\s+')
+data = pd.read_csv(file_path, sep='\s+')
 # read all rows until last_row
-data = pd.read_csv(file_path, sep='\s+', nrows=last_row)
+# data = pd.read_csv(file_path, sep='\s+', nrows=last_row)
 
 ### plot
 # plot for x and y
@@ -66,7 +66,7 @@ plt.annotate("Start", (x.iloc[0], y.iloc[0]), textcoords="offset points", xytext
 plt.annotate("Ende", (x.iloc[-1], y.iloc[-1]), textcoords="offset points", xytext=(-15, -10), ha='center', fontsize=9)
 plt.xlabel("x (in mm)")
 plt.ylabel("y (in mm)")
-plt.title(title)
+# plt.title(title)
 plt.axis('equal')  # Skalierung für x und y gleich
 plt.grid(True)
 plt.legend()
