@@ -1,26 +1,11 @@
 ### FRAGEN FÜR KONSULTATION
 ----------------------------------------------------------------- 
-- alle quadrate: es fehlt ein datenset zum ende der kurve (siehe plot_position), neue aufnahmen machen
-- welches modell als vergleich zu PID auf gerade benutzt? motors oder integral?
-- haben wir die dft aufnahme 1s oder 2s laufen lassen?
+
 
 ### AKTUELL
 -----------------------------------------------------------------
-# Formatierung:
-- hunspell, aspell für spellchecking (regelbasiert)
-- abbildungen nochmal generieren, dabei datensets als csv speichern und sicherstellen, dass pro methode genau 40 kurven betrachtet werden
-- abbildungen fertig formatieren: tix für abbildungen in latex, R + ggplot oder Python + matplotlib am besten in pdf oder svg format, barrierefreie farben, berechnete abweichungen von rad in grad umrechnen
-- accel-drift aufnahme in anhang
-- fourier-transformation abbildung erstellen
 
-# Inhalt:
-- reinschreiben, wann ich daten manipuliert habe (z.b. 10 runden wurden gefahren)
-- pid: funktioniert nicht gut, weil drift über gesamte laufzeit zu hoch wird (weil nur am anfang der aufnahme kalibriert wird); kurvenwinkel messbar durch current angle, wenn target winkel sich ändert
-- besser wäre: nach und vor jeder kurve reset (pid auf strecke, madgwick auf kurve); vorteil: kalibrierung verhindert drift über die zeit
-- ausblick: magnetometer (ausgerichtet an magnetfeld der erde) könnte helfen, weil nordausrichtung eine feste größe ist. ein weiteres koordinatensystem, an dem sich orientiert werden kann
-- ausblick: pid-tuning mit neuronalem netz möglich
 
-# Implementierung:
 
 
 ## Theorieteil, den ich schon recherchieren/schreiben kann 
@@ -30,16 +15,14 @@
 
 ## Recherche:
 - was sind lineare (signal-)filter/finite impulse response?
-- quaternionen/gesamtrotation/irreale zahlen
+- quaternionen/gesamtrotation/komplexe zahlen
 
 ## Sonstiges/Nice to have:
-- sliding window für integration: praktisch, einen datenpunkt "aus der zukunft" zu haben, wenn man integriert, weil es dann entspannter wird, was auch immer das bedeutet
 nice to have:
 - wenn bot auf dem kopf steht, UV-LED ausschalten und beep
 - signal to noise ratio berechnen für mein csv signal
 - charakterisierung für signal (z.b. energie, irgendein maß, nicht amplitude) --> vergleich, wurzel der summe der quadrate von allen samples (mit/ohne lp vergleich)
 - analyse: frequency response von meinem filter (faktoren mit denen einzelne frequenzen verstärkt/abgeschwächt wurden durch einsatz filter --> plotten)
-- low pass hardware aktivieren und testen, LPF2 (siehe IMU-handbuch), vergleich  mit signal to noise ratio in db
 
 
 ### ON HOLD
@@ -162,3 +145,12 @@ charlottes vorschlag:
 	madgwick durchgehend berechnen
 	zielwinkel im verhältnis zum ausgangspunkt 0: 0,90,180,-90,0
 - präsentationstermin ausmachen
+- alle quadrate: es fehlt ein datenset zum ende der kurve (siehe plot_position), neue aufnahmen machen
+- welches modell als vergleich zu PID auf gerade benutzt? motors oder integral?
+- haben wir die dft aufnahme 1s oder 2s laufen lassen?
+- hunspell, aspell für spellchecking (regelbasiert)
+- abbildungen nochmal generieren, dabei datensets als csv speichern und sicherstellen, dass pro methode genau 40 kurven betrachtet werden
+- abbildungen fertig formatieren: tix für abbildungen in latex, R + ggplot oder Python + matplotlib am besten in pdf oder svg format, barrierefreie farben, berechnete abweichungen von rad in grad umrechnen
+- fourier-transformation abbildung erstellen
+- sliding window für integration: praktisch, einen datenpunkt "aus der zukunft" zu haben, wenn man integriert, weil es dann entspannter wird, was auch immer das bedeutet
+- low pass hardware aktivieren und testen, LPF2 (siehe IMU-handbuch), vergleich  mit signal to noise ratio in db

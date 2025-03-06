@@ -29,7 +29,8 @@ import matplotlib.pyplot as plt
 # problem: weiß nicht, wie ich start/stopp für ecken definieren soll
 # lösung: immer, wenn bot einen target-wert mit modulo pi (0.0, 1.5707, 2...., 3.1425, etc.) erreicht, ist die ecke fertig gefahren oder anders:
 # wenn target-wert nicht modulo pi ist, wird aktuell eine kurve gefahren
-last_row = 1700
+last_row = 1800
+# last_row = 10441
 title = "Fahren eines Quadrats mit abgerundeten Ecken:\n Bewegungspfad des Roboters in der Arena \n mit PID-Regler"
 file_path = "MA_files/Recherche/Ergebnisse/PID_tests/2025-02-06_13-58-11.dat"
 
@@ -63,11 +64,18 @@ plt.plot(x, y, marker="o", markersize=1, label="Pfad Roboter 16", color="#0072B2
 plt.annotate("Start", (x.iloc[0], y.iloc[0]), textcoords="offset points", xytext=(-15, 10), ha='center', fontsize=9)
 plt.annotate("Ende", (x.iloc[-1], y.iloc[-1]), textcoords="offset points", xytext=(-15, -10), ha='center', fontsize=9)
 
-# Markierungen für Kurvenbeginn und Kurvenende
-frames_to_mark = {799: "B1", 861: "E1", 
- 1022: "B2", 1179: "E2",
- 1342: "B3", 1425: "E3",
- 1589: "B4", 1651: "E4",}
+# Markierungen für Kurvenbeginn und Kurvenende bevor ich die Mitte der Strecke als neuen Endpunkt festgelegt habe
+# frames_to_mark = {799: "B1", 861: "E1", 
+#  1022: "B2", 1179: "E2",
+#  1342: "B3", 1425: "E3",
+#  1589: "B4", 1651: "E4",}
+# add offset to frames_to_mark
+# offset = -240
+# frames_to_mark = {frame + offset: label for frame, label in frames_to_mark.items()}
+frames_to_mark = {799: "B1", 943: "E1", 
+ 1022: "B2", 1259: "E2", 
+ 1342: "B3", 1508: "E3",
+ 1589: "B4", 1747: "E4",}
 # frames_to_mark = {i:i for i in range(0, 1700, 50)}
 for frame, label in frames_to_mark.items():
     if frame in data["frame"].values:
