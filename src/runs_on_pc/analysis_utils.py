@@ -108,7 +108,7 @@ def receive_data(rec_time_sek: float) -> pd.DataFrame:
 #     madgwick/mahony/kalman vergleich performance/genauigkeit 
 
 
-# dsef master(
+# def master(
 #         parameter_sets: list[TestCalcParams]  # type: ignore
 #     ):
 #     # daten sammeln
