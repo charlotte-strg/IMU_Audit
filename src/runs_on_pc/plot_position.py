@@ -29,10 +29,10 @@ import matplotlib.pyplot as plt
 # problem: weiß nicht, wie ich start/stopp für ecken definieren soll
 # lösung: immer, wenn bot einen target-wert mit modulo pi (0.0, 1.5707, 2...., 3.1425, etc.) erreicht, ist die ecke fertig gefahren oder anders:
 # wenn target-wert nicht modulo pi ist, wird aktuell eine kurve gefahren
-last_row = 1800
-# last_row = 10441
+# last_row = 1800
+last_row = 10078
 title = "Fahren eines Quadrats mit abgerundeten Ecken:\n Bewegungspfad des Roboters in der Arena \n mit PID-Regler"
-file_path = "MA_files/Recherche/Ergebnisse/PID_tests/2025-02-06_13-58-11.dat"
+file_path = "MA_files/Recherche/Ergebnisse/PID_tests_neu/2025-03-11_15-10-26.dat"
 
 ##  Gerade, IMU, PID
 # title = "Fahren einer Gerade:\n Bewegungspfad des Roboters in der Arena \n mit PID-Regler"
@@ -72,17 +72,22 @@ plt.annotate("Ende", (x.iloc[-1], y.iloc[-1]), textcoords="offset points", xytex
 # add offset to frames_to_mark
 # offset = -240
 # frames_to_mark = {frame + offset: label for frame, label in frames_to_mark.items()}
-frames_to_mark = {799: "B1", 943: "E1", 
- 1022: "B2", 1259: "E2", 
- 1342: "B3", 1508: "E3",
- 1589: "B4", 1747: "E4",}
+# frames_to_mark = {799: "B1", 943: "E1", 
+#  1022: "B2", 1259: "E2", 
+#  1342: "B3", 1508: "E3",
+#  1589: "B4", 1747: "E4",}
 # frames_to_mark = {i:i for i in range(0, 1700, 50)}
-for frame, label in frames_to_mark.items():
-    if frame in data["frame"].values:
-        x_mark = data.loc[data["frame"] == frame, "x"].values[0]
-        y_mark = data.loc[data["frame"] == frame, "y"].values[0]
-        plt.scatter(x_mark, y_mark, color='red', s=20, label=label)
-        plt.annotate(label, (x_mark, y_mark), textcoords="offset points", xytext=(-15, 10), ha='center', fontsize=9)
+# frames_to_mark = {364: "M0", 454: "B1", 544: "E1", 634: "M1", 
+#                   724: "B1", 813: "E1", 902: "M1", 
+#                   993: "B1", 1083: "E1", 1173: "M1", 
+#                   1263: "B1", 1352: "E1", 1443: "M1", 
+# }
+# for frame, label in frames_to_mark.items():
+#     if frame in data["frame"].values:
+#         x_mark = data.loc[data["frame"] == frame, "x"].values[0]
+#         y_mark = data.loc[data["frame"] == frame, "y"].values[0]
+#         plt.scatter(x_mark, y_mark, color='red', s=20, label=label)
+#         plt.annotate(label, (x_mark, y_mark), textcoords="offset points", xytext=(-15, 10), ha='center', fontsize=9)
 
 
 plt.xlabel("x (in mm)")

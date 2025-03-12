@@ -1,10 +1,10 @@
 ### FRAGEN FÜR KONSULTATION
 ----------------------------------------------------------------- 
-
+- fft mit t auf der x-achse oder frequenzen
 
 ### AKTUELL
 -----------------------------------------------------------------
-
+- x-achse für fft beginnt schon vor 0, vor allem bei accel, damit peak bei 0 sichtbar
 
 
 

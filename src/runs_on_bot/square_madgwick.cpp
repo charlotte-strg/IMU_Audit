@@ -62,6 +62,34 @@ void drive_circle_motors(float radius, float vm) {
   murmecha::motors::set_linear_velocities(v_l, v_r);
 }
 
+void drive_curve_motors(float radius, float angle, float vm) {
+  int start_curve = 1;
+  int end_curve = 0;
+  // aktuelle orientierung zwischenspeichern
+
+  float dist = radius * angle;
+  float time = dist / vm;
+
+  // vor der Kurve senden an david int-f-ffff
+  udp.beginPacket(IPAddress(10, 0, 2, 137), 4444);
+  udp.write((uint8_t *) &start_curve, sizeof(start_curve));
+  udp.endPacket();
+
+  drive_circle_motors(radius, vm);
+
+  delay(time * 1000);
+  // delay ersetzen durch schleife
+  // in schleife konstant orientierung überprüfen, bis 90 grad drehung erreicht ist
+
+  // nach der Kurve senden an david f-ffff-int-long-int
+  udp.beginPacket(IPAddress(10, 0, 2, 137), 4444);
+  udp.write((uint8_t *) &end_curve, sizeof(end_curve));
+  udp.endPacket();
+
+  motors::set_linear_velocities(0, 0);
+
+}
+
 void drive_segment_motors(float length, float vm) {
   float time = length / vm;
   motors::set_linear_velocities(vm, vm);
