@@ -95,7 +95,7 @@ void drive_curve(float radius, float angle, float vm) {
   udp.endPacket();
 
   motors::set_linear_velocities(0, 0);
-
+  
 }
 
 void custom_loop_square_david() {
