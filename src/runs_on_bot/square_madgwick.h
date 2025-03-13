@@ -11,9 +11,10 @@
 #include <driver/mcpwm.h>
 #include "imu_madgwick_integration.h"
 #include "imu_integral_integration.h"
+#include <tuple>
 
-void custom_setup_square_madgwick();
-void custom_loop_square_madgwick();
+void setup_square();
+void loop_square();
 
 namespace murmecha {
 
@@ -52,11 +53,21 @@ namespace motors {
 // }
 
 // Bewegungsfunktionen
-// überarbeiten
-void drive_circle(float radius, float velocity);
-void drive_segment(float length, float velocity);
-void drive_curve_madgwick(float radius, float angle, float velocity);
-void drive_curve_integral(float radius, float angle, float velocity);
+
+// void drive_circle(float radius, float velocity);
+// void drive_segment(float length, float velocity);
+// void drive_curve_madgwick(float radius, float angle, float velocity);
+// void drive_curve_integral(float radius, float angle, float velocity);
+
+murmecha::math::Vector3 measure_gyro_drift();
+void drive_segment_motors(float length, float vm);
+void drive_circle_motors(float radius, float vm);
+void drive_curve_motors(float radius, float angle, float vm);
+void drive_curve_integral(murmecha::math::Vector3 computed_drifts, float radius, float angle, float vm);
+void drive_curve_madgwick(murmecha::math::Vector3 computed_drifts, float radius, float target_angle, float vm);
+float pid_control(float target_angle, float current_angle);
+void reset_pid();
+// std::tuple<float, float> pid_to_wheel_speeds(float pid_output, float base_speed);
 
 } // namespace murmecha
 

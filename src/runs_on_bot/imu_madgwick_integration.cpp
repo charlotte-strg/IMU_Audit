@@ -4,7 +4,7 @@
 #include <robot.hpp>
 #include "quaternions.h"
 
-// quaternionen global initialisiert mit 1, 0, 0, 0
+// quaternion global initialisiert mit 1, 0, 0, 0
 Quaternion orientation_madgwick = Quaternion::identity();
 
 // aktualisiert orientierung des bots mit jedem neuen datenpunkt aus der IMU

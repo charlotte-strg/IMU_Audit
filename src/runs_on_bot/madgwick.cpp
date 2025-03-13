@@ -3,15 +3,18 @@
 #include <array>
 #include "quaternions.h"
 
-
-// System constants
-constexpr float deltat = 1.034e-3; // realistische samplingzeit von 1.034ms
-//constexpr float deltat = 0.001f; // Sampling period in seconds (1 ms)
-//constexpr float gyroMeasError = M_PI * (5.0f / 180.0f); // Gyroscope measurement error in rad/s (5 deg/s)
-//const float beta = std::sqrt(3.0f / 4.0f) * gyroMeasError; // Compute beta
-const float beta = 0.42f; // beta, das david und ich festgelegt haben aufgrund von mean winkelgeschwindigkeit aus 1000 samples
+// Code übernommen aus Madgwick (2010)
 
 
+// System-Konstanten
+//constexpr float deltat = 1.034e-3; //realistische Samplingzeit
+constexpr float deltat = 2*1.034e-3; //realistische Samplingzeit für PID
+const float beta = 0.42f; // basierend auf durchschnittlicher Winkelgeschwindigkeit aus 1000 Samples
+
+// wendet den Madgwick-Filter auf die Sensordaten an, gibt Quaternion zurück
+// q: aktuelle Quaternion
+// w_x, w_y, w_z: Winkelgeschwindigkeiten in rad/s
+// a_x, a_y, a_z: Beschleunigungen in g
 Quaternion madgwick_filter(const Quaternion& q, float w_x, float w_y, float w_z, float a_x, float a_y, float a_z) {
     // Local system variables
     float norm; // Vector norm

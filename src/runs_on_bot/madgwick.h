@@ -5,12 +5,10 @@
 #include <array>
 #include "quaternions.h"
 
-// System constants
-// constexpr float deltat = 0.001f;  // sampling period in sec
-// constexpr float gyroMeasError = M_PI * (5.0f / 180.0f);  // gyro messfehler in rad/s
-// const float beta = std::sqrt(3.0f / 4.0f) * gyroMeasError;  // berechne beta
-
-// applies madgwick filter to sensor data, returns quaternion
+// wendet den Madgwick-Filter auf die Sensordaten an, gibt Quaternion zurück
+// q: aktuelle Quaternion
+// w_x, w_y, w_z: Winkelgeschwindigkeiten in rad/s
+// a_x, a_y, a_z: Beschleunigungen in g
 Quaternion madgwick_filter(
     const Quaternion& q,
     float w_x, float w_y, float w_z,

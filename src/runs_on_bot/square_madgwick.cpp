@@ -12,6 +12,9 @@
 #include <driver/mcpwm.h>
 #include "imu_madgwick_integration.h"
 #include "imu_integral_integration.h"
+#include <tuple>
+
+#include <complex>
 
 #define bufferSize 256
 
@@ -24,6 +27,18 @@ float R_perp = 68.0f/2.0f;
 murmecha::math::Vector3 computed_drifts;
 const int sample_count = 1000;
 murmecha::math::Vector3 samples[sample_count];
+
+// PID Params
+float p = 60;
+float i = 0.025;
+float d = 9;
+ 
+const float sensitivity = 1.0f;
+
+auto q_initial_pid = Quaternion::identity();
+ 
+float previous_error = 0;
+float integral = 0;
 
 //Wifi Setup
 extern WiFiUDP udp;
@@ -92,69 +107,6 @@ void drive_curve_motors(float radius, float angle, float vm) {
 
 }
 
-// Kurve fahren mit Madgwick-Filter
-void drive_curve_madgwick(murmecha::math::Vector3 computed_drifts, float radius, float target_angle, float vm) {
-  int start_curve = 1;
-  int end_curve = 0;
-
-  reset_orientation_madgwick();
-  Quaternion q_initial = Quaternion::identity();
-  float current_angle = 0; 
-
-  // R_l mit + --> Rechtskurve, R_r mit - --> Linkskurve
-  // R_l mit - --> Rechtskurve, R_r mit + --> Linkskurve
-  float R_l = radius - R_perp;
-  float R_r = radius + R_perp;
-
-  float v_r = 2 * vm / (1 + (R_l / R_r));
-  float v_l = v_r * (R_l / R_r);
-
-  // wenn Quadrat mit scharfen Ecken (radius ~ 0) gefahren werden soll
-  if(abs(radius)<1e-5){
-    v_l = -vm;
-    v_r = vm;
-  }
-
-  // vor der Kurve senden an Laptop im Format int-f-ffff
-  // udp.beginPacket(IPAddress(10, 0, 2, 137), 4444);
-  // udp.write((uint8_t *) &start_curve, sizeof(start_curve));
-  // udp.write((uint8_t *) &current_angle, sizeof(current_angle));
-  // udp.write((uint8_t *) &orientation_madgwick, sizeof(orientation_madgwick));
-  // udp.endPacket();
-
-  int while_counter = 0;
-  uint64_t start_time = micros();
-  while(current_angle < target_angle) {
-    while_counter++;
-
-    // Abbruchkriterium, falls einer der Driftwerte > pi
-    if (abs(computed_drifts.x) > M_PI || abs(computed_drifts.y) > M_PI || abs(computed_drifts.z) > M_PI) {
-      Serial.printf("Drift ist zu hoch: (%f %f %f)\n", computed_drifts.x, computed_drifts.y, computed_drifts.z);
-      break;
-    }
-
-    // Einsatz des Magdwick-Filters
-    update_orientation_madgwick(computed_drifts);
-
-    motors::set_linear_velocities(v_l, v_r);
-    current_angle = calculateRotationAngle(q_initial, orientation_madgwick);
-    delay(1);
-  }
-  uint64_t end_time = micros();
-  auto time_diff = end_time - start_time;
-
-  // nach der Kurve senden an Laptop im Format int-f-ffff-int-long
-  // udp.beginPacket(IPAddress(10, 0, 2, 137), 4444);
-  // udp.write((uint8_t *) &end_curve, sizeof(end_curve));
-  // udp.write((uint8_t *) &current_angle, sizeof(current_angle));
-  // udp.write((uint8_t *) &orientation_madgwick, sizeof(orientation_madgwick));
-  // udp.write((uint8_t *) &while_counter, sizeof(while_counter));
-  // udp.write((uint8_t *) &time_diff, sizeof(time_diff));
-  // udp.endPacket();
-
-  motors::set_linear_velocities(0, 0);
-}
-
 // Kurve fahren mit numerischer Integration
 void drive_curve_integral(murmecha::math::Vector3 computed_drifts,float radius, float angle, float vm) {
   int start_curve = 1;
@@ -218,7 +170,101 @@ void drive_curve_integral(murmecha::math::Vector3 computed_drifts,float radius, 
   motors::set_linear_velocities(0, 0);
 }
 
-void custom_setup_square_madgwick() {
+// Kurve fahren mit Madgwick-Filter
+void drive_curve_madgwick(murmecha::math::Vector3 computed_drifts, float radius, float target_angle, float vm) {
+  int start_curve = 1;
+  int end_curve = 0;
+
+  reset_orientation_madgwick();
+  Quaternion q_initial = Quaternion::identity();
+  float current_angle = 0; 
+
+  // R_l mit + --> Rechtskurve, R_r mit - --> Linkskurve
+  // R_l mit - --> Rechtskurve, R_r mit + --> Linkskurve
+  float R_l = radius - R_perp;
+  float R_r = radius + R_perp;
+
+  float v_r = 2 * vm / (1 + (R_l / R_r));
+  float v_l = v_r * (R_l / R_r);
+
+  // wenn Quadrat mit scharfen Ecken (radius ~ 0) gefahren werden soll
+  if(abs(radius)<1e-5){
+    v_l = -vm;
+    v_r = vm;
+  }
+
+  // vor der Kurve senden an Laptop im Format int-f-ffff
+  // udp.beginPacket(IPAddress(10, 0, 2, 137), 4444);
+  // udp.write((uint8_t *) &start_curve, sizeof(start_curve));
+  // udp.write((uint8_t *) &current_angle, sizeof(current_angle));
+  // udp.write((uint8_t *) &orientation_madgwick, sizeof(orientation_madgwick));
+  // udp.endPacket();
+
+  int while_counter = 0;
+  uint64_t start_time = micros();
+  while(current_angle < target_angle) {
+    while_counter++;
+
+    // Abbruchkriterium, falls einer der Driftwerte > pi
+    if (abs(computed_drifts.x) > M_PI || abs(computed_drifts.y) > M_PI || abs(computed_drifts.z) > M_PI) {
+      Serial.printf("Drift ist zu hoch: (%f %f %f)\n", computed_drifts.x, computed_drifts.y, computed_drifts.z);
+      break;
+    }
+
+    // Einsatz des Magdwick-Filters
+    update_orientation_madgwick(computed_drifts);
+
+    motors::set_linear_velocities(v_l, v_r);
+    current_angle = calculateRotationAngle(q_initial, orientation_madgwick);
+    delay(1);
+  }
+  uint64_t end_time = micros();
+  auto time_diff = end_time - start_time;
+
+  // nach der Kurve senden an Laptop im Format int-f-ffff-int-long
+  // udp.beginPacket(IPAddress(10, 0, 2, 137), 4444);
+  // udp.write((uint8_t *) &end_curve, sizeof(end_curve));
+  // udp.write((uint8_t *) &current_angle, sizeof(current_angle));
+  // udp.write((uint8_t *) &orientation_madgwick, sizeof(orientation_madgwick));
+  // udp.write((uint8_t *) &while_counter, sizeof(while_counter));
+  // udp.write((uint8_t *) &time_diff, sizeof(time_diff));
+  // udp.endPacket();
+
+  motors::set_linear_velocities(0, 0);
+}
+
+// PID-Regler, gibt nötige änderung der motorgeschwindigkeit als float zurück
+float pid_control(float target_angle, float current_angle) {
+
+  std::complex<float> target_dir(cosf(target_angle), sinf(target_angle));
+  std::complex<float> current_dir(cosf(current_angle), sinf(current_angle));
+
+  auto dir_diff = conj(target_dir) * current_dir;
+  float error = atan2f(dir_diff.imag(), dir_diff.real());
+
+  integral += error;
+  float derivative = error - previous_error;
+  previous_error = error;
+
+  return p * error + i * integral + d * derivative;
+}
+
+// PID-Regler zurücksetzen
+void reset_pid() {
+  previous_error = 0;
+  integral = 0;
+}
+
+// PID-Regler, Output umgewandelt in Radgeschwindigkeiten 
+std::tuple<float, float> pid_to_wheel_speeds(float pid_output, float base_speed) {
+    return {
+      base_speed + sensitivity * pid_output,
+      base_speed - sensitivity * pid_output
+    };
+}
+
+
+void setup_square() {
   Serial.begin(115200);
   murmecha::config_t config;
   config.use_microstepping = false;
@@ -251,7 +297,7 @@ void custom_setup_square_madgwick() {
 }
 
 
-void custom_loop_square_madgwick() {
+void loop_square() {
 
   // Gerade fahren mit motorbasierter Fahrweise
   drive_segment_motors(250.0f, vel);

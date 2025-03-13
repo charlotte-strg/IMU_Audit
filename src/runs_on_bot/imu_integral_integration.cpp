@@ -10,8 +10,9 @@ murmecha::math::Vector3 orientation_integral = {0.0f, 0.0f, 0.0f};
 void IRAM_ATTR update_orientation_integral(murmecha::math::Vector3 computed_drifts) {
 // attribut IRAM_ATTR --> update_orientation_integrals im schnellen arbeitsspeicher
     
-    // samplingzeit analog zu madgwick
+    // samplingzeit analog zu madgwick, eventuell anpassen
     constexpr float deltat = 1.034e-3;
+    //constexpr float deltat = 2*1.034e-3;
     
     murmecha::imu::read_accel_and_gyro();
     auto accel = murmecha::imu::get_acceleration();
@@ -19,7 +20,6 @@ void IRAM_ATTR update_orientation_integral(murmecha::math::Vector3 computed_drif
 
     murmecha::math::Vector3 computed_gyro = gyro - computed_drifts;
 
-    // david: bitte nochmal * als operator definieren (skalarprodukt)
     computed_gyro.x = computed_gyro.x * deltat;
     computed_gyro.y = computed_gyro.y * deltat;
     computed_gyro.z = computed_gyro.z * deltat;

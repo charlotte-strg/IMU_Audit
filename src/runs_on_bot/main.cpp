@@ -1,21 +1,26 @@
 #include <Arduino.h>
+#include "square_madgwick.h"
+#include "square_pid.h"
+
+// deprecated:
+// #include  "test_madgwick.h"
 // #include <imu_serial_out.h>
 // #include "imu_out.h"
 // #include "square_david.h"
-#include "square_madgwick.h"
-// #include  "test_madgwick.h"
+ 
 
 void setup() {
-  // custom_setup();
-  // custom_setup_square_david();
-  custom_setup_square_madgwick();
-  // custom_setup_test_madgwick();
+  // Setup für alle Steuerungsmodelle außer PID
+  // setup_square();
+
+  // Setup für PID-Steuerung
+  setup_square_pid();
 }
 
 void loop() {
-  // custom_loop();
-  // custom_loop_position();
-  // custom_loop_square_david();
-  custom_loop_square_madgwick();
-  // custom_loop_test_madgwick();
+  // Loop für alle Steuerungsmodelle außer PID
+  // loop_square();
+
+  // Loop für PID-Steuerung
+  loop_square_pid();
 }
