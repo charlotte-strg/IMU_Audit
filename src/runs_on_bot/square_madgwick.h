@@ -52,6 +52,7 @@ namespace motors {
 // }
 
 // Bewegungsfunktionen
+// überarbeiten
 void drive_circle(float radius, float velocity);
 void drive_segment(float length, float velocity);
 void drive_curve_madgwick(float radius, float angle, float velocity);
