@@ -3,6 +3,12 @@ import matplotlib.pyplot as plt
 
 ### read in files
 
+# #  Quadrat, abgerundete Ecken, Motors, None
+last_row = 1800
+# last_row = 7931
+title = "Fahren eines Quadrats mit abgerundeten Ecken:\n Bewegungspfad des Roboters in der Arena \n mit motorbasierter Fahrweise"
+file_path = "MA_files/Recherche/Ergebnisse/Motors_None_Rounded/2025-01-22_17-03-38.dat"
+
 # ##  Quadrat, runde Ecken, IMU, Integral
 # last_row = 8043
 # # last_row = 752
@@ -20,19 +26,14 @@ import matplotlib.pyplot as plt
 # title = "Fahren eines Quadrats mit scharfen Ecken:\n Bewegungspfad des Roboters in der Arena \n mit Madgwick-Filter"
 # file_path = "MA_files/Recherche/Ergebnisse/IMU_Madgwick_Square/2025-01-22_16-03-09.dat"
 
-# #  Quadrat, abgerundete Ecken, Motors, None
-# last_row = 7931
-# title = "Fahren eines Quadrats mit abgerundeten Ecken:\n Bewegungspfad des Roboters in der Arena \n mit motorbasierter Fahrweise"
-# file_path = "MA_files/Recherche/Ergebnisse/Motors_None_Rounded/2025-01-22_17-03-38.dat"
-
 ##  Quadrat, abgerundete Ecken, IMU, PID
 # problem: weiß nicht, wie ich start/stopp für ecken definieren soll
 # lösung: immer, wenn bot einen target-wert mit modulo pi (0.0, 1.5707, 2...., 3.1425, etc.) erreicht, ist die ecke fertig gefahren oder anders:
 # wenn target-wert nicht modulo pi ist, wird aktuell eine kurve gefahren
 # last_row = 1800
-last_row = 10078
-title = "Fahren eines Quadrats mit abgerundeten Ecken:\n Bewegungspfad des Roboters in der Arena \n mit PID-Regler"
-file_path = "MA_files/Recherche/Ergebnisse/PID_tests_neu/2025-03-11_15-10-26.dat"
+# # last_row = 10078
+# title = "Fahren eines Quadrats mit abgerundeten Ecken:\n Bewegungspfad des Roboters in der Arena \n mit PID-Regler"
+# file_path = "MA_files/Recherche/Ergebnisse/PID_tests_neu/2025-03-11_15-10-26.dat"
 
 ##  Gerade, IMU, PID
 # title = "Fahren einer Gerade:\n Bewegungspfad des Roboters in der Arena \n mit PID-Regler"
@@ -69,25 +70,35 @@ plt.annotate("Ende", (x.iloc[-1], y.iloc[-1]), textcoords="offset points", xytex
 #  1022: "B2", 1179: "E2",
 #  1342: "B3", 1425: "E3",
 #  1589: "B4", 1651: "E4",}
+
 # add offset to frames_to_mark
 # offset = -240
 # frames_to_mark = {frame + offset: label for frame, label in frames_to_mark.items()}
+
 # frames_to_mark = {799: "B1", 943: "E1", 
 #  1022: "B2", 1259: "E2", 
 #  1342: "B3", 1508: "E3",
 #  1589: "B4", 1747: "E4",}
 # frames_to_mark = {i:i for i in range(0, 1700, 50)}
+
+# erstes Quadrat PID
 # frames_to_mark = {364: "M0", 454: "B1", 544: "E1", 634: "M1", 
 #                   724: "B1", 813: "E1", 902: "M1", 
 #                   993: "B1", 1083: "E1", 1173: "M1", 
 #                   1263: "B1", 1352: "E1", 1443: "M1", 
 # }
-# for frame, label in frames_to_mark.items():
-#     if frame in data["frame"].values:
-#         x_mark = data.loc[data["frame"] == frame, "x"].values[0]
-#         y_mark = data.loc[data["frame"] == frame, "y"].values[0]
-#         plt.scatter(x_mark, y_mark, color='red', s=20, label=label)
-#         plt.annotate(label, (x_mark, y_mark), textcoords="offset points", xytext=(-15, 10), ha='center', fontsize=9)
+# erstes Quadrat Motorbasiert
+frames_to_mark = {733: "B1", 812: "E1", 
+                    937: "B2", 1015: "E2",
+                    1140: "B3", 1219: "E3",
+                    1343: "B4", 1421: "E4",
+}
+for frame, label in frames_to_mark.items():
+    if frame in data["frame"].values:
+        x_mark = data.loc[data["frame"] == frame, "x"].values[0]
+        y_mark = data.loc[data["frame"] == frame, "y"].values[0]
+        plt.scatter(x_mark, y_mark, color='red', s=20, label=label)
+        plt.annotate(label, (x_mark, y_mark), textcoords="offset points", xytext=(-15, 10), ha='center', fontsize=9)
 
 
 plt.xlabel("x (in mm)")
