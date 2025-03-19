@@ -89,8 +89,12 @@ murmecha::imu::set_accel_data_rate(murmecha::imu::DATA_RATE_1_6kHz);
 murmecha::imu::set_gyro_data_rate(murmecha::imu::DATA_RATE_1_6kHz);
 
 WiFi.config(IPAddress(10, 0, 1, 22), IPAddress(10, 0, 2, 1), IPAddress(255, 255, 0, 0));
-//WLAN, Passwort (UNI)
-WiFi.begin("DeziWLAN", "Ingwer-Zitrone");
+
+//Insert your WiFi credentials here:
+String network;
+String pass_key;
+
+WiFi.begin(network, pass_key);
 while (!WiFi.isConnected()){
     delay(100);
     Serial.println("Connecting to WiFi..");

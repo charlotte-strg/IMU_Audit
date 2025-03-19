@@ -53,15 +53,12 @@
 //     // WiFi.config(IPAddress(10, 0, 1, 13), IPAddress(10, 0, 2, 1), IPAddress(255, 255, 0, 0));
 //     WiFi.config(IPAddress(10, 0, 1, 22), IPAddress(10, 0, 2, 1), IPAddress(255, 255, 0, 0));
 
+//     Insert your WiFi credentials here:
+//     String network;
+//     String pass_key;
 
-//     //WLAN, Passwort (zuhause)
-//     WiFi.begin("Vodafone-2584", "4EgXXA7R93x9ypCz");
-    
-//     //WLAN, Passwort (UNI)
-//     // WiFi.begin("DeziWLAN", "Ingwer-Zitrone");
-
-//     //WLAN, Passwort (ZackZack)
-//     // WiFi.begin("ESPRESSOZACKZACK", "WIFIZACKZACK");
+//     //WLAN, Passwort
+//     WiFi.begin(network, pass_key);
 
 //     while (!WiFi.isConnected()){
 //         delay(100);
