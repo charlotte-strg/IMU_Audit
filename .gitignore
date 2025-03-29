@@ -4,3 +4,8 @@
 .vscode/launch.json
 .vscode/ipch
 src/deprecated/*
+orga/*
+MA_files/Recherche/Abbildungen/*
+MA_files/Recherche/Papers/*
+MA_files/Recherche/Bücher/*
+MA_files/Privat/*

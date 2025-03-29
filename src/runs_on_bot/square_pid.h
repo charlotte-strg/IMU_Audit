@@ -1,5 +1,5 @@
-#ifndef SQUARE_MADGWICK_H
-#define SQUARE_MADGWICK_H
+#ifndef SQUARE_H
+#define SQUARE_H
 
 #include <Arduino.h>
 #include <WiFi.h>
@@ -34,4 +34,4 @@ void loop_square_pid();
 
 std::tuple<float, float> pid_to_wheel_speeds(float pid_output, float base_speed);
 
-#endif // SQUARE_MADGWICK_H
+#endif // SQUARE_H

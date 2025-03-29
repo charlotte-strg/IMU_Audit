@@ -1,13 +1,6 @@
 #include <Arduino.h>
-#include "square_madgwick.h"
-#include "square_pid.h"
-
-// deprecated:
-// #include  "test_madgwick.h"
-// #include <imu_serial_out.h>
-// #include "imu_out.h"
-// #include "square_david.h"
- 
+#include "square.h"
+#include "square_pid.h" 
 
 void setup() {
   // Setup für alle Steuerungsmodelle außer PID
